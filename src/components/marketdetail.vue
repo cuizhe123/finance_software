@@ -14,7 +14,7 @@
         <div class="marketdetail-info-container">
             <div class="marketdetail-info">
                 <div class="marketdetail-label">股票名称:</div>
-                <div class="marketdetail-value">{{ code }}</div>
+                <div class="marketdetail-value">{{ stockname }}</div>
             </div>
             <div class="marketdetail-info">
                 <div class="marketdetail-label">股票代码:</div>
@@ -73,6 +73,7 @@
 export default {
     data() {
         return {
+        stockname: '',  //股票名
         currentPrice: 0,
         changePercentage: 2,
         todayOpen: 0,
