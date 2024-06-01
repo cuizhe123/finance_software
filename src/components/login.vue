@@ -14,14 +14,14 @@
                 <form @submit.prevent="handleSubmit" class="form">
                     <div class="form-group">
                         <label for="username">用户名:</label>
-                        <input type="text" id="username" v-model="username" required>
+                        <input type="text" id="username" v-model="username" required autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label for="password">密 码:&nbsp;</label>
-                        <input type="password" id="password" v-model="password" required>
+                        <input type="password" id="password" v-model="password" required autocomplete="off">
                     </div>
-                    <button @click="getInhomepage">登录</button>
-                </form>
+                    <button @click="getInhomepage(username)">登录</button>
+                </form>                          
                 <button @click="switchToRegister">切换为注册</button>
             </div>
         </div>
@@ -42,33 +42,12 @@ export default {
         };
     },
     methods: {
-        async handleSubmit() {
-            try {
-                // 发送异步请求到后端验证用户名和密码
-                const response = await axios.post('/api/login', {
-                    username: this.username,
-                    password: this.password
-                });
-
-                // 后端返回验证结果
-                if (response.data.success) {
-                    // 登录成功，进行跳转或其他操作
-                    // 例如：this.$router.push('/dashboard');
-                } else {
-                    // 显示错误消息
-                    this.errorMessage = '用户名或密码错误';
-                }
-            } catch (error) {
-                console.error('登录请求失败:', error);
-                // 显示通用错误消息
-                this.errorMessage = '登录失败，请稍后重试';
-            }
-        },
+        
         switchToRegister() {
           this.$emit('switchToRegister'); // 触发自定义事件
         },
-        getInhomepage() {
-          this.$emit('getInhomepage'); // 触发自定义事件
+        getInhomepage(username) {
+          this.$emit('getInhomepage', username); // 触发自定义事件
         }
     }
 };

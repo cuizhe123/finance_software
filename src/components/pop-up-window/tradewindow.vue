@@ -9,18 +9,21 @@
         </form> 
         <div class="trade-button-container">
             <button class="trade-button1" @click="openbuyin">买入</button>
-            <buyin v-if="buyin" :code="code"  @close="closebuyin" />
-            <button class="trade-button2" @click="sell">卖出</button>
+            <buyin v-if="buyin" :stockname="stockname" :code="code" :currentPrice="currentPrice" @close="closebuyin" />
+            <button class="trade-button2" @click="opensellout">卖出</button>
+            <sellout v-if="sellout" :stockname="stockname" :code="code" :currentPrice="currentPrice" @close="closesellout" />
         </div>
-        
     </div>  
 </template>
     
 <script>
 import buyin from './buyin.vue';
+import sellout from './sellout.vue';
+
   export default {
     components: {
-        buyin
+        buyin,
+        sellout,
     },
     props: {
         code: {
@@ -32,8 +35,9 @@ import buyin from './buyin.vue';
       return {
         username: 'John Doe', // 用户名
         stockname: '上证指数',  //股票名
-        currentPrice: 0,  //价格
-        buyin: false
+        currentPrice: 10,  //价格
+        buyin: false,
+        sellout: false
       };
     },
    
@@ -47,7 +51,12 @@ import buyin from './buyin.vue';
         closebuyin() {
             this.buyin = false;
         },
-       
+        opensellout() {
+            this.sellout = true;
+        },
+        closesellout() {
+            this.sellout = false;
+        },
     },
   }
 </script>

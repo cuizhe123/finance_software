@@ -1,19 +1,26 @@
 <template>
+    <div class="background-layer"></div>
     <div class="logo-container1">
-        <img src="../../public/logo.jpg" alt="logo">
+        <img src="../../logo.jpg" alt="logo">
+    </div>
+    <div class="logo-container2">
+        <img src="../../xdd.jpg" alt="logo">
+    </div>
+    <div class="logo-container3">
+        <img src="../../bbx.jpg" alt="logo">
     </div>
     <div class="top-label">
         <div class="top-value">欢 迎 来 到 金 霸 霸 量 化 交 易 平 台 ！您 的 最 佳 选 择 !</div>
         <div class="top-value1">祝您今日愉快！</div>
-        <div class="top-value2">用户: {{ username }}</div>
+        <div class="top-value2">用户: {{ this.username }}</div>
     </div>
     <div class="top-buttons-container">
         <div class="top-buttons">
             <button class="top-button1">首页</button>
-            <button class="top-button" @click="getInmarket">市场行情</button>
-            <button class="top-button" @click="getIntrade">模拟交易</button>
-            <button class="top-button" @click="getInstrategy">策略</button>
-            <button class="top-button" @click="getInfactor">因子回测</button>
+            <button class="top-button" @click="getInmarket(username)">市场行情</button>
+            <button class="top-button" @click="getIntrade(username)">模拟交易</button>
+            <button class="top-button" @click="getInstrategy(username)">策略</button>
+            <button class="top-button" @click="getInfactor(username)">因子回测</button>
             <button class="top-button" @click="switchToLogin">退出账号</button>
         </div>
     </div>
@@ -38,14 +45,27 @@
         <button class="info-button" @click="openmydetail">持仓详情</button>
         <mydetail v-if="mydetailOpen" @close="closemydetail" />
     </div>
+    <div class="user-info">
+        <div class="info-label1">交易历史</div>
+        <button class="info-button" @click="openmyhistory">历史详情</button>
+        <myhistory v-if="myhistoryOpen" @close="closemyhistory" />
+    </div>
 </template>
 
 <script>
+import Myhistory from './pop-up-window/myhistory.vue';
 import Mydetail from './pop-up-window/mydetail.vue';
 import Charge from './pop-up-window/charge.vue';
 import Information from './pop-up-window/information.vue';
 export default {
+    props: {
+        username: {
+            type: String,
+            required: true
+        }
+    },
     components: {
+        Myhistory,
         Mydetail,
         Charge,
         Information
@@ -54,23 +74,20 @@ export default {
         switchToLogin() {
             this.$emit('switchToLogin'); 
         },
-        getInhomepage() {
-            this.$emit('getInhomepage'); 
+        getInhomepage(username) {
+            this.$emit('getInhomepage', username); 
         },
-        getInmarket() {
-            this.$emit('getInmarket');
+        getInmarket(username) {
+            this.$emit('getInmarket', username);
         },
-        getIntrade() {
-            this.$emit('getIntrade');
+        getIntrade(username) {
+            this.$emit('getIntrade', username);
         },
-        getInstrategy() {
-            this.$emit('getInstrategy');
+        getInstrategy(username) {
+            this.$emit('getInstrategy', username);
         },
-        getInfactor() {
-            this.$emit('getInfactor');
-        },
-        switchToLogin() {
-            this.$emit('switchToLogin');
+        getInfactor(username) {
+            this.$emit('getInfactor', username);
         },
         openmydetail() {
             this.mydetailOpen = true;
@@ -90,27 +107,61 @@ export default {
         closeaccount() {
             this.accountOpen = false;
         },
+        openmyhistory() {
+            this.myhistoryOpen = true;
+        },
+        closemyhistory() {
+            this.myhistoryOpen = false;
+        },
     },
     data() {
         return {
-            username: 'John Doe', // 用户名
+            
             cash: 10000, // 现金
             holdings: 10, // 持仓量
+
             mydetailOpen: false,
             chargeOpen: false,
-            accountOpen: false
+            accountOpen: false,
+            myhistoryOpen: false
         };
     }
 }
 </script>
   
 <style>
+.background-layer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../public/background.jpg'); /* 相对于 CSS 文件的路径 */
+    background-size: cover;
+    z-index: -1;
+  }      
+
 .logo-container1 img {
     position: absolute;
     top: 0;
     left: 0;
     z-index: 1; 
     width: 99px; /* 调整logo图片宽度 */
+   
+  }
+  .logo-container2 img {
+    position: absolute;
+    top: 170px;
+    left: 0;
+    width: 355px; /* 调整logo图片宽度 */
+   
+  }
+  .logo-container3 img {
+    position: absolute;
+    top: 170px;
+    right: 0;
+    width: 355px; /* 调整logo图片宽度 */
    
   }
 .top-label {
@@ -200,7 +251,8 @@ export default {
 
 .user-info {
     position: relative;
-    top: 50px;
+    top: 80px;
+    left: 50%;
     background-color: #4cc3e0;
     padding: 20px 20px;
     margin: 50px auto;
@@ -215,6 +267,12 @@ export default {
     width: 100px; /* 设置 info-label 的宽度 */
 }
   
+.info-label1 {
+    font-weight: bold;
+    margin-left: 0px;
+    display: inline-block; /* 将 info-label 设置为内联块元素 */
+    width: 100px; /* 设置 info-label 的宽度 */
+}
 .info-value {
     display: inline-block; /* 将 info-value 设置为内联块元素 */
     margin-left: 20px; /* 添加左边距，使其位于 info-label 的右侧 */
