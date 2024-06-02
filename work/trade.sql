@@ -60,7 +60,7 @@ CREATE TABLE users_stock( -- 用户的持仓信息
     name VARCHAR(500), -- name不唯一
     stock_code VARCHAR(500),
     stock_name VARCHAR(500),
-    num INT,
+    num INT DEFAULT 0,
     CONSTRAINT fk_stock_user_name FOREIGN KEY (name) 
     REFERENCES users(name) ON DELETE CASCADE ON UPDATE CASCADE, -- 设置外键，这个和users的用户name相关联
     CONSTRAINT fk_stock_current_stockid FOREIGN KEY (stock_code) 
@@ -87,7 +87,7 @@ CREATE TABLE self_choose( -- 用户的自选个股
 CREATE TABLE trade_record( -- 用户的交易记录
     id INT PRIMARY KEY auto_increment,
     name VARCHAR(500), -- name不唯一
-    record INT, -- 用户的第record次交易，好把用户的同一次交易信息统合在一起
+    -- record INT, -- 用户的第record次交易，好把用户的同一次交易信息统合在一起
     stock_code VARCHAR(500),  -- 用户的第record次交易的某一个股票代码
     stock_name VARCHAR(500),
     num INT, -- 第record次交易的某一个股票的数量

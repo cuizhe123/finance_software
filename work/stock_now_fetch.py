@@ -4,6 +4,7 @@ import sys
 
 # 沪交所的股票数据
 def fetch_sh_stock_now(say:int = 0) ->tuple[bool, str]:
+    '沪交所的股票数据并存入stock_sh_now.json'
     try:
         stock_sh_a_spot_em_df = ak.stock_sh_a_spot_em()
     except Exception as e:
@@ -18,8 +19,9 @@ def fetch_sh_stock_now(say:int = 0) ->tuple[bool, str]:
         print(stock_sh_a_spot_em_df)
     return True,f"Successfully"
 
+ # 深交所的股票数据
 def fetch_sz_stock_now(say:int = 0)->tuple[bool, str]:
-    # 深交所的股票数据
+    '深交所的股票数据并存入stock_sz_now.json'
     try:
         stock_sz_a_spot_em_df = ak.stock_sz_a_spot_em()
     except Exception as e:

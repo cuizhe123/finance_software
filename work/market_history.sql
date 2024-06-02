@@ -1,13 +1,14 @@
--- Active: 1716631946273@@127.0.0.1@3306@stock_history
-CREATE DATABASE stock_history;
-DROP DATABASE stock_history;
+CREATE DATABASE market_history;
 
--- 为每一个股票都生产一个table
-CREATE TABLE sh600519(
+DROP DATABASE market_history;
+
+USE market_history;
+
+CREATE TABLE sh000001(
     id INT PRIMARY KEY auto_increment,
     time VARCHAR(100), -- 交易时间
-    stock_id VARCHAR(500), -- 股票的代码
-    stock_name VARCHAR(500), -- 股票的名称
+    market_code VARCHAR(500), -- 指数的代码
+    market_name VARCHAR(500), -- 指数的名称
     exchange VARCHAR(10), -- 交易所标识
     open_price FLOAT, -- 开盘价（元）
     close_price FLOAT, -- 收盘价（元）

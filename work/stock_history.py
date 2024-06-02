@@ -121,23 +121,23 @@ def history_core(user_db ,mycursor, file, flag:str = 'sh', period="daily", start
             # break
             sql2 = f'''INSERT INTO {zh_symbol} (time, stock_id, stock_name, exchange, open_price, close_price,
               high_price, low_price, trade_num, trade_money, amplitude, up_down, price_range, turnover_ratio)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                        ON DUPLICATE KEY UPDATE
-                        time = VALUES(time),
-                        stock_id = VALUES(stock_id),
-                        stock_name = VALUES(stock_name),
-                        exchange = VALUES(exchange),
-                        open_price = VALUES(open_price),
-                        close_price = VALUES(close_price),
-                        high_price = VALUES(high_price),
-                        low_price = VALUES(low_price),
-                        trade_num = VALUES(trade_num),
-                        trade_money = VALUES(trade_money),
-                        amplitude = VALUES(amplitude),
-                        up_down = VALUES(up_down),
-                        price_range = VALUES(price_range),
-                        turnover_ratio = VALUES(turnover_ratio)
-                        '''
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ON DUPLICATE KEY UPDATE
+                time = VALUES(time),
+                stock_id = VALUES(stock_id),
+                stock_name = VALUES(stock_name),
+                exchange = VALUES(exchange),
+                open_price = VALUES(open_price),
+                close_price = VALUES(close_price),
+                high_price = VALUES(high_price),
+                low_price = VALUES(low_price),
+                trade_num = VALUES(trade_num),
+                trade_money = VALUES(trade_money),
+                amplitude = VALUES(amplitude),
+                up_down = VALUES(up_down),
+                price_range = VALUES(price_range),
+                turnover_ratio = VALUES(turnover_ratio)
+                '''
             for history_data in history_list:
                 val = (history_data['日期'], symbol, name, flag, history_data['开盘'], \
                        history_data['收盘'], history_data['最高'], history_data['最低'], history_data['成交量'], history_data['成交额'],\
@@ -148,3 +148,4 @@ def history_core(user_db ,mycursor, file, flag:str = 'sh', period="daily", start
     return True
 
 a = stock_history_save(1)
+

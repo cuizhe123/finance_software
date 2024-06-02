@@ -1,21 +1,97 @@
--- Active: 1716631946273@@127.0.0.1@3306@stock_history
+-- Active: 1716631946273@@127.0.0.1@3306@market
 CREATE DATABASE market;
 DROP DATABASE market;
+USE market;
 
--- 一系列大盘上证指数，沪深300指数之类的按时间的数据
-CREATE TABLE SZ00001(
+DROP TABLE market;
+DROP TABLE sh000001;
+DROP TABLE sz399001;
+DROP TABLE bj899050;
+DROP TABLE sh000300;
+
+CREATE TABLE market(
     id INT PRIMARY KEY auto_increment,
-    time VARCHAR(100), -- 交易时间
-    market_id VARCHAR(500), -- 上证指数的代码
+    market_code VARCHAR(500), -- 上证指数的代码
     market_name VARCHAR(500), -- 上证指数的名称
-    open_price FLOAT, -- 开盘价（元）
+    price FLOAT, -- 现价
     high_price FLOAT, -- 最高价（元）
     low_price FLOAT, -- 最低价（元）
-    end_price FLOAT, -- 收盘价（元）
-    trade_num INT, -- 成交量（手）
-    trade_money FLOAT, -- 成交额（元）
-    amplitude FLOAT, -- 振幅（%）
-    turnover_ratio FLOAT, -- 换手率（%）
     price_fluctuation FLOAT, -- 涨跌幅（%）
-    price_range FLOAT -- 涨跌额（元）
+    amplitude FLOAT, -- 振幅（%）
+    yesterday_end FLOAT, -- 昨收
+    today_open FLOAT, -- 今开
+    trade_money FLOAT, -- 成交额（元）
+    high52 FLOAT, -- 52周最高
+    low52 FLOAT, -- 52周最低
+    UNIQUE(market_code)
+);
+
+
+-- 一系列大盘上证指数，沪深300指数之类的实时数据
+CREATE TABLE sh000001(
+    id INT PRIMARY KEY auto_increment,
+    market_code VARCHAR(500), -- 上证指数的代码
+    market_name VARCHAR(500), -- 上证指数的名称
+    price FLOAT, -- 现价
+    high_price FLOAT, -- 最高价（元）
+    low_price FLOAT, -- 最低价（元）
+    price_fluctuation FLOAT, -- 涨跌幅（%）
+    amplitude FLOAT, -- 振幅（%）
+    yesterday_end FLOAT, -- 昨收
+    today_open FLOAT, -- 今开
+    trade_money FLOAT, -- 成交额（元）
+    high52 FLOAT, -- 52周最高
+    low52 FLOAT, -- 52周最低
+    UNIQUE(market_code)
+);
+
+CREATE TABLE sz399001(
+    id INT PRIMARY KEY auto_increment,
+    market_code VARCHAR(500), -- 深证成指的代码
+    market_name VARCHAR(500), -- 深证成指的名称
+    price FLOAT, -- 现价
+    high_price FLOAT, -- 最高价（元）
+    low_price FLOAT, -- 最低价（元）
+    price_fluctuation FLOAT, -- 涨跌幅（%）
+    amplitude FLOAT, -- 振幅（%）
+    yesterday_end FLOAT, -- 昨收
+    today_open FLOAT, -- 今开
+    trade_money FLOAT, -- 成交额（元）
+    high52 FLOAT, -- 52周最高
+    low52 FLOAT, -- 52周最低
+    UNIQUE(market_code)
+);
+
+CREATE TABLE bj899050(
+    id INT PRIMARY KEY auto_increment,
+    market_code VARCHAR(500), -- 北证50的代码
+    market_name VARCHAR(500), -- 北证50的名称
+    price FLOAT, -- 现价
+    high_price FLOAT, -- 最高价（元）
+    low_price FLOAT, -- 最低价（元）
+    price_fluctuation FLOAT, -- 涨跌幅（%）
+    amplitude FLOAT, -- 振幅（%）
+    yesterday_end FLOAT, -- 昨收
+    today_open FLOAT, -- 今开
+    trade_money FLOAT, -- 成交额（元）
+    high52 FLOAT, -- 52周最高
+    low52 FLOAT, -- 52周最低
+    UNIQUE(market_code)
+);
+
+CREATE TABLE sh000300(
+    id INT PRIMARY KEY auto_increment,
+    market_code VARCHAR(500), -- 沪深300的代码
+    market_name VARCHAR(500), -- 沪深300的名称
+    price FLOAT, -- 现价
+    high_price FLOAT, -- 最高价（元）
+    low_price FLOAT, -- 最低价（元）
+    price_fluctuation FLOAT, -- 涨跌幅（%）
+    amplitude FLOAT, -- 振幅（%）
+    yesterday_end FLOAT, -- 昨收
+    today_open FLOAT, -- 今开
+    trade_money FLOAT, -- 成交额（元）
+    high52 FLOAT, -- 52周最高
+    low52 FLOAT, -- 52周最低
+    UNIQUE(market_code)
 );

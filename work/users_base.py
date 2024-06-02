@@ -71,7 +71,7 @@ def user_register(name:str = '', password:str = '111111', question:str = 'are yo
 
 #* DONE index = 2 查：用户正常登录，要根据用户名进行数据查询，查询用户的用户名是否存在，如果存在返回包括密码在内的数据(user_trade.users)
 
-def user_search(name:str = '', password:str = '', say:int = 0) -> tuple[tuple, str]:
+def user_search(name:str = '', password:str = '', say:int = 0) -> tuple[dict, str]:
     '根据用户名进行数据查询，查询用户的用户名是否存在，如果存在返回包括密码在内的数据在tuple[tuple, str]里，若不存在则返回tuple[none, str]'
     if say:
         print(f"\nCall function: search_user(name = {name}, password = {password})")
@@ -102,7 +102,8 @@ def user_search(name:str = '', password:str = '', say:int = 0) -> tuple[tuple, s
             print(f"-->Successful: User's information:{user}")
         mycursor.close()
         user_db.close()
-        return user, f"Successfully"
+        re_user = {'id':user[0], 'name':user[1], 'password':user[2], 'question':user[3], 'answer':user[4], 'money':user[5]}
+        return re_user, f"Successfully"
     
 
 #* DONE index = 3 改：用户登录之后，可以进行密码修改、密保问题和答案修改(user_trade.users)
@@ -195,7 +196,7 @@ def user_delete(name:str = '', password:str = '111111', say:int = 0) -> tuple[bo
 
 #* DONE index = 5 查： 用户要找回密码，此时只根据用户的name则返回所有的用户基本数据
 
-def user_search_by_name(name:str = '', say:int = 0) -> tuple[tuple, str]:
+def user_search_by_name(name:str = '', say:int = 0) -> tuple[dict, str]:
     '根据用户名进行数据查询，查询用户的用户名是否存在，如果存在返回包括密码在内的数据在tuple[tuple, str]里，若不存在则返回tuple[none, str]'
     if say:
         print(f"\nCall function: search_user_by_name(name = {name})")
@@ -226,12 +227,14 @@ def user_search_by_name(name:str = '', say:int = 0) -> tuple[tuple, str]:
             print(f"-->Successful: User's information:{user}")
         mycursor.close()
         user_db.close()
-        return user, f"Successfully"
 
-#* DONE index = 6: 改 实现用户的充值
+        re_user = {'id':user[0], 'name':user[1], 'password':user[2], 'question':user[3], 'answer':user[4], 'money':user[5]}
+        return re_user, f"Successfully"
 
-def user_money_increase(name:str = '', password:str = '111111', money:float = 0, say:int = 0) -> tuple[bool, str]:
-    '用户登录之后，可以实现用户的充值，修改成功会返回True，修改不成功则返回False'
+#* DONE index = 6: 改 实现用户的充值 账户的钱数 += money
+
+def user_money_modify(name:str = '', password:str = '111111', money:float = 0, decrease:int = 0,say:int = 0) -> tuple[bool, str]:
+    '用户登录之后，可以实现用户的充值，账户的钱数 += money，修改成功会返回True，修改不成功则返回False'
     database_name = 'user_trade'
     user_db = connect.connect_db(database_name)
 
@@ -250,24 +253,23 @@ def user_money_increase(name:str = '', password:str = '111111', money:float = 0,
         user_db.close()
         return False, f"Error: The name={name} and password={password} user doesn\'t exist."
     
-    # state 的类型暂时还只是tuple
+    # state 的类型是dict
     
     sql = """
             UPDATE users
-            SET password = %s, question = %s, answer = %s
+            SET money = %s
             WHERE name = %s
           """
             # 执行更新语句
-    mycursor.execute(sql, (new_password, question, answer, name))
-
+    if decrease == 0:
+        mycursor.execute(sql, (state['money'] + money, name))
+    else:
+        mycursor.execute(sql, (state['money'] - money, name))
+        
     # 提交事务
     user_db.commit()
 
     # 关闭游标和连接
     mycursor.close()
     user_db.close()
-    if say:
-        print(f"-->Successfully update:")
-        print(f"-->init: {state}")
-        print(f"-->latest: name = {name}, password = {new_password}, question = {question}, answer = {answer}")
     return True, f"Successfully"
