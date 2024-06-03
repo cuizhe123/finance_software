@@ -2,8 +2,8 @@ import mysql.connector
 import connect
 
 #* DONE index = 1 根据stock_code进行数据查询股票实时数据
-def stock_search_by_code(stock_code:str = 'sh600087', say:int = 0) -> tuple[tuple, str]:
-    '根据stock_code进行数据查询，stock_code = sh600087 或者600087均可，查询该股票实时数据，如果存在返回该股票的数据tuple[tuple, str]里，若不存在则返回tuple[none, str]'
+def stock_search_by_code(stock_code:str = 'sh600089', say:int = 0) -> tuple[dict, str]:
+    "根据stock_code进行数据查询，stock_code = sh600089 或者600089均可，查询该股票实时数据，如果存在返回该股票的数据tuple[dict, str]里，若不存在则返回tuple[none, str]，dict = {'id', 'stock_code', 'stock_name', 'exchange', 'price', 'up_down', 'price_range', 'trade_num', 'trade_money', 'amplitude', 'high_price', 'low_price', 'today_open', 'yester_price', 'quantity_ratio', 'turnover_ratio', 'pe_ratio', 'pb_ratio', 'total_value', 'circle_value', 'increase_ratio', 'five_up_down', 'zdf60', 'dfnc'}"
     if len(stock_code) > 6:
         stock_code = stock_code[2:]
 
@@ -36,12 +36,13 @@ def stock_search_by_code(stock_code:str = 'sh600087', say:int = 0) -> tuple[tupl
             print(f"-->Successful: Stock's information:{stock}")
         mycursor.close()
         user_db.close()
-        return stock, f"Successfully"
+        re_stock = {'id':stock[0], 'stock_code':stock[1], 'stock_name':stock[2], 'exchange':stock[3], 'price':stock[4], 'up_down':stock[5], 'price_range':stock[6], 'trade_num':stock[7], 'trade_money':stock[8], 'amplitude':stock[9], 'high_price':stock[10], 'low_price':stock[11], 'today_open':stock[12], 'yester_price':stock[13], 'quantity_ratio':stock[14], 'turnover_ratio':stock[15], 'pe_ratio':stock[16], 'pb_ratio':stock[17], 'total_value':stock[18], 'circle_value':stock[19], 'increase_ratio':stock[20], 'five_up_down':stock[21], 'zdf60':stock[22], 'dfnc':stock[23]}
+        return re_stock, f"Successfully"
 
 
 #* DONE index = 2 根据stock_name进行数据查询股票实时数据
-def stock_search_by_name(stock_name:str = '贵州茅台', say:int = 0) -> tuple[tuple, str]:
-    '根据stock_name进行数据查询，查询该股票数据，如果存在返回该股票的实时数据tuple[tuple, str]里，若不存在则返回tuple[none, str]'
+def stock_search_by_name(stock_name:str = '贵州茅台', say:int = 0) -> tuple[dict, str]:
+    "根据stock_name进行数据查询，查询该股票数据，如果存在返回该股票的实时数据tuple[dict, str]里，若不存在则返回tuple[none, str],dict = {'id', 'stock_code', 'stock_name', 'exchange', 'price', 'up_down', 'price_range', 'trade_num', 'trade_money', 'amplitude', 'high_price', 'low_price', 'today_open', 'yester_price', 'quantity_ratio', 'turnover_ratio', 'pe_ratio', 'pb_ratio', 'total_value', 'circle_value', 'increase_ratio', 'five_up_down', 'zdf60', 'dfnc'}"
     if say:
         print(f"\nCall function: stock_search_by_code(stock_name = {stock_name})")
     database_name = 'user_trade'
@@ -71,7 +72,8 @@ def stock_search_by_name(stock_name:str = '贵州茅台', say:int = 0) -> tuple[
             print(f"-->Successful: Stock's information:{stock}")
         mycursor.close()
         user_db.close()
-        return stock, f"Successfully"
+        re_stock = {'id':stock[0], 'stock_code':stock[1], 'stock_name':stock[2], 'exchange':stock[3], 'price':stock[4], 'up_down':stock[5], 'price_range':stock[6], 'trade_num':stock[7], 'trade_money':stock[8], 'amplitude':stock[9], 'high_price':stock[10], 'low_price':stock[11], 'today_open':stock[12], 'yester_price':stock[13], 'quantity_ratio':stock[14], 'turnover_ratio':stock[15], 'pe_ratio':stock[16], 'pb_ratio':stock[17], 'total_value':stock[18], 'circle_value':stock[19], 'increase_ratio':stock[20], 'five_up_down':stock[21], 'zdf60':stock[22], 'dfnc':stock[23]}
+        return re_stock, f"Successfully"
 
 
 #* DONE index = 3 获取数据库中全部的stock数据，以列表形式返回大约5000只股票数据

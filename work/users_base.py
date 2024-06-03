@@ -72,7 +72,7 @@ def user_register(name:str = '', password:str = '111111', question:str = 'are yo
 #* DONE index = 2 查：用户正常登录，要根据用户名进行数据查询，查询用户的用户名是否存在，如果存在返回包括密码在内的数据(user_trade.users)
 
 def user_search(name:str = '', password:str = '', say:int = 0) -> tuple[dict, str]:
-    '根据用户名进行数据查询，查询用户的用户名是否存在，如果存在返回包括密码在内的数据在tuple[tuple, str]里，若不存在则返回tuple[none, str]'
+    "根据用户名进行数据查询，查询用户的用户名是否存在，如果存在返回包括密码在内的数据在tuple[dict, str]里，若不存在则返回tuple[none, str]，dict = {'id', 'name', 'password', 'question', 'answer', 'money'}"
     if say:
         print(f"\nCall function: search_user(name = {name}, password = {password})")
     database_name = 'user_trade'
@@ -197,7 +197,7 @@ def user_delete(name:str = '', password:str = '111111', say:int = 0) -> tuple[bo
 #* DONE index = 5 查： 用户要找回密码，此时只根据用户的name则返回所有的用户基本数据
 
 def user_search_by_name(name:str = '', say:int = 0) -> tuple[dict, str]:
-    '根据用户名进行数据查询，查询用户的用户名是否存在，如果存在返回包括密码在内的数据在tuple[tuple, str]里，若不存在则返回tuple[none, str]'
+    "用户要找回密码，根据用户名进行数据查询，查询用户的用户名是否存在，如果存在返回包括密码在内的数据在tuple[dict, str]里，若不存在则返回tuple[none, str]，dict = {'id', 'name', 'password', 'question', 'answer', 'money'}"
     if say:
         print(f"\nCall function: search_user_by_name(name = {name})")
     database_name = 'user_trade'
