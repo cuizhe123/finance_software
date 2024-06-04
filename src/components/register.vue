@@ -53,7 +53,8 @@ export default {
       isPasswordValid: true,
       isUsernameValid: true,
       isConfirmPasswordValid: true,
-      errorPriority: '' // 用于跟踪错误消息的优先级
+      errorPriority: '', // 用于跟踪错误消息的优先级
+      errorMessage: '' // 用于存储后端返回的错误消息
     };
   },
   computed: {
@@ -62,17 +63,44 @@ export default {
     }
   },
   methods: {
-    handleSubmit() {
+    // handleSubmit() {
+    //   if (this.isFormValid) {
+    //     // 这里可以提交表单数据到后端保存用户注册信息
+    //     console.log('用户名:', this.username);
+    //     console.log('密码:', this.password);
+    //     // 清空表单数据
+    //     this.username = '';
+    //     this.password = '';
+    //     this.confirmPassword = '';
+    //     // 清空错误消息
+    //   } 
+    // },
+
+    async handleSubmit() {
       if (this.isFormValid) {
-        // 这里可以提交表单数据到后端保存用户注册信息
-        console.log('用户名:', this.username);
-        console.log('密码:', this.password);
-        // 清空表单数据
-        this.username = '';
-        this.password = '';
-        this.confirmPassword = '';
-        // 清空错误消息
-      } 
+        try {
+          //将这四个参数传到后端
+          const response = await axios.post('http://127.0.0.1:5000/user/register', {
+            username: this.username,
+            password: this.password,
+            question: 'defaultQuestion', // 假设问题固定，实际情况中应该动态获取
+            answer: 'defaultAnswer' // 假设答案固定，实际情况中应该动态获取
+          });
+          const data = response.data; //data的数据结构，例如：{'result':True,'message':successful}
+          if (data.result) {
+            alert('注册成功');
+            // 注册成功，跳转到登录或者首页
+
+
+            
+          } else {
+            this.errorMessage = data.message;
+          }
+        } catch (error) {
+          console.error('注册失败:', error);
+          this.errorMessage = '注册失败，请稍后再试';
+        }
+      }
     },
     validateUsername() {
       const regex = /^[a-zA-Z0-9\u4e00-\u9fa5]{3,8}$/;

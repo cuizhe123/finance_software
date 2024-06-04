@@ -45,13 +45,14 @@ export default {
         async handleSubmit() {
             try {
                 // 发送异步请求到后端验证用户名和密码
-                const response = await axios.post('/api/login', {
+                const response = await axios.post('http://127.0.0.1:5000/user/login', {
                     username: this.username,
                     password: this.password
                 });
 
-                // 后端返回验证结果
-                if (response.data.success) {
+              // 后端返回验证结果
+                //成功的话，返回[user的信息,'successful']，失败的话返回[None,错误信息]
+                if (response.data.user != None) {
                     // 登录成功，进行跳转或其他操作
                     // 例如：this.$router.push('/dashboard');
                 } else {

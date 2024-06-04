@@ -42,14 +42,38 @@
         close() {
             this.$emit('close');
         },
-        handleSubmit() {
+        async handleSubmit() {
             if (this.isFormValid) {
                 // 这里可以提交表单数据到后端保存用户注册信息
-                console.log('用户名:', this.username);
-                console.log('密码:', this.password);
+                try {
+                    //将这四个参数传到后端
+                    const response = await axios.post('http://127.0.0.1:5000/user/change', {
+                        username: this.username,
+                        old_password: this.old_password,
+                        new_password: this.new_password,
+                        question: this.question, 
+                        answer: this.anwser 
+                    });
+                    const data = response.data; //data的数据结构，例如：{'result':True,'message':successful}
+                    if (data.result) {
+                        alert('修改成功');
+                        // 修改成功
+
+
+                        
+                    } else {
+                        this.errorMessage = data.message;
+                    }
+                    } catch (error) {
+                    console.error('更改失败:', error);
+                    this.errorMessage = '更改失败，请稍后再试';
+                }
+                    
+                // console.log('用户名:', this.username);
+                // console.log('密码:', this.password);
                 // 清空表单数据
-                this.password = '';
-                this.confirmPassword = '';
+                // this.password = '';
+                // this.confirmPassword = '';
             } 
         },
         validatePassword() {
