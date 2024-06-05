@@ -1,35 +1,72 @@
 <template>
-    <div class="buy-in-popup">
-        <button class="exit-button" @click="close">关闭</button>
-        <div class="popup-title-container">
-            <p class="popup-title">您要买入的数量为：</p>
-        </div>
-        <div class="input-container">
-            <input type="number" v-model="quantity" placeholder="请输入数量" min="1" step="1">
-        </div>
-        <button class="confirm-button" @click="confirm">确认</button>
+  <div class="buy-in-popup">
+    <button class="exit-button" @click="close">关闭</button>
+    <div class="popup-title-container">
+      <p class="popup-title1">您当前的持仓数量为:{{this.total_quantity}}</p>
+      <p class="popup-title2">持有金额为{{this.cash}}</p>
+      <p class="popup-title">您要买入的数量为：</p>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        quantity: 1 // 默认数量为1
-      };
+    <div class="input-container">
+      <input type="number" v-model="buy_quantity" placeholder="请输入数量" min="1" step="1">
+    </div>
+    <button class="confirm-button" @click="confirm">确认</button>
+    <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+    <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    stockname: {
+      type: String,
+      required: true
     },
-    methods: {
-      close() {
-        this.$emit('close');
-      },
-      confirm() {
-        // 在这里执行确认购买的逻辑，可以使用 this.quantity 获取输入的数量
-        console.log('确认购买数量为:', this.quantity);
-        // 在这里可以触发关闭浮窗的事件或者执行其他操作
+    code: {
+      type: String,
+      required: true
+    },
+    //currentPrice: {
+     // type: Number,
+      //required: true
+    //},
+    //cash: {
+      //type: Number,
+      //required: true
+    //}
+  },
+  data() {
+    return {
+      total_quantity: 0, //总数量
+      buy_quantity: 1, // 数量
+      errorMessage: '', // 错误消息
+      successMessage: '', // 成功消息
+      cash:10,
+      currentPrice:10
+    };
+  },
+  methods: {
+    close() {
+      this.$emit('close');
+    },
+    confirm() {
+      const totalPrice = this.buy_quantity * this.currentPrice;
+      if (totalPrice > this.cash) {
+        this.errorMessage = '购买金额超过您的可用资金，请重新输入';
+        this.successMessage = '';
+      } else {
+        // 购买成功，触发成功交易事件
+        this.successMessage = `成功购买 ${this.buy_quantity} 股 ${this.stockname}`;
+        this.errorMessage = '';
+        // 更新已有金额和持仓信息
+        this.cash -= totalPrice;
+        this.total_quantity += this.buy_quantity;
+        // 在这里可以触发更新持仓信息的事件或者执行其他操作
       }
     }
-  };
-  </script>
+  }
+};
+</script>
   
   <style scoped>
   .buy-in-popup {
@@ -47,18 +84,38 @@
   
   .popup-title-container {
     position: absolute;
-    top:15%;
+    top:10%;
     left: 50%;
     width: 50%;
-    height: 30%;
+    height: 50%;
     transform: translateX(-50%); /* 平移自身宽度的一半 */
     background-color: rgb(3, 215, 74);
     font-weight: bold;
     margin-bottom: 15px;
   }
+  .popup-title1{
+    position: absolute;
+    top:10%;
+    left: 50%;
+    width: 50%;
+    height: 30%;
+    transform: translateX(-50%); /* 平移自身宽度的一半 */
+    font-size: 18px;
+  }
+
+  .popup-title2{
+    position: absolute;
+    top:28%;
+    left: 50%;
+    width: 50%;
+    height: 30%;
+    transform: translateX(-50%); /* 平移自身宽度的一半 */
+    font-size: 18px;
+  }
+
   .popup-title{
     position: absolute;
-    top:17%;
+    top:47%;
     left: 50%;
     width: 50%;
     height: 30%;
@@ -68,7 +125,7 @@
   
   .input-container {
     position: absolute;
-    top:30%;
+    top:45%;
     left: 50%;
     transform: translateX(-50%); /* 平移自身宽度的一半 */
     margin-bottom: 15px;
@@ -83,7 +140,7 @@
   
   .confirm-button {
     position: absolute;
-    top:50%;
+    top:60%;
     left: 50%;
     transform: translateX(-50%); /* 平移自身宽度的一半 */
     display: block;
@@ -100,5 +157,28 @@
   .confirm-button:hover {
     background-color: #0056b3;
   }
+
+  .error-message{
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 8px;
+    background-color: #ffcccc;
+    color: #f80f0b;
+    border: 1px solid #e40808;
+    border-radius: 4px;
+  }
+.success-message {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 8px;
+  background-color: #ccffd5;
+  color: green;
+  border: 1px solid #08e43b;
+  border-radius: 4px;
+}
   </style>
   

@@ -48,18 +48,18 @@
                 try {
                     //将这四个参数传到后端
                     const response = await axios.post('http://127.0.0.1:5000/user/change', {
-                        username: this.username,
-                        old_password: this.old_password,
-                        new_password: this.new_password,
-                        question: this.question, 
-                        answer: this.anwser 
+                        'username': this.username,
+                        'old_password': this.old_password,
+                        'new_password': this.new_password,
+                        'question': this.question, 
+                        'answer': this.anwser 
                     });
                     const data = response.data; //data的数据结构，例如：{'result':True,'message':successful}
-                    if (data.result) {
+                    if (data.get('result')) {
                         alert('修改成功');
                         // 修改成功
 
-
+                    
                         
                     } else {
                         this.errorMessage = data.message;

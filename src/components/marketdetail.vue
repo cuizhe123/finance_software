@@ -1,6 +1,7 @@
 <template>
+    <div class="background-layer"></div>
     <div class="logo-container1">
-        <img src="../../public/logo.jpg" alt="logo">
+        <img src="../../logo.jpg" alt="logo">
     </div>
     <div class="top-label">
         <div class="top-value">欢 迎 来 到 金 霸 霸 量 化 交 易 平 台 ！您 的 最 佳 选 择 !</div>
@@ -9,7 +10,7 @@
     </div>
     <div class="marketdetail-top-label">
         <div class="marketdetail-container">
-            <button class="marketdetail-button" @click="getInmarket">返回</button>
+            <button class="marketdetail-button" @click="getInmarket(username)">返回</button>
         </div>
         <div class="marketdetail-info-container">
             <div class="marketdetail-info">
@@ -88,14 +89,17 @@ export default {
         code: {
             type: String,
             required: true
+        },
+        username: {
+            type: String,
+            required: true
         }
     },
     methods: {
         
-        getInmarket() {
-            this.$emit('getInmarket'); // 触发自定义事件
+        getInmarket(username) {
+            this.$emit('getInmarket', username);
         },
-        
     }
 }
 </script>

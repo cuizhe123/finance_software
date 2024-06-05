@@ -14,10 +14,10 @@
         </thead>
         <tbody>
           <tr v-for="(stock, index) in stocks" :key="index">
-            <td>{{ stock.name }}</td>
-            <td>{{ stock.code }}</td>
-            <td>{{ stock.price }}</td>
-            <td>{{ stock.quantity }}</td>
+            <td>{{ stock.get('name') }}</td>
+            <td>{{ stock.get('code') }}</td>
+            <td>{{ stock.get('price') }}</td>
+            <td>{{ stock.get('quantity') }}</td>
           </tr>
         </tbody>
       </table>
@@ -30,22 +30,43 @@ export default {
   data() {
     return {
       stocks: [
-        { name: '股票A', code: '001', price: 10.5, quantity: 100 },
-        { name: '股票B', code: '002', price: 20.3, quantity: 150 },
-        { name: '股票C', code: '003', price: 15.8, quantity: 80 },
+        { 'name': '股票A', 'code': '001', 'price': 10.5, 'quantity': 100 },
+        { 'name': '股票B', 'code': '002', 'price': 20.3, 'quantity': 150 },
+        { 'name': '股票C', 'code': '003', 'price': 15.8, 'quantity': 80 },
       ]
     };
   },
   methods: {
+    async handleSubmit() {
+            if (this.isFormValid) {
+                // 这里可以提交表单数据到后端保存用户注册信息
+                try {
+                    //将这四个参数传到后端
+                    const response = await axios.post('http://127.0.0.1:5000/user/history', {
+                        'username': this.username,
+                    });
+                    const data = response.data; //data的数据结构，[{'name': ,'code': ,'price': ,'quantity': },{...},{...}]
+                    this.stocks = data.get('result');
+                 
+                    } catch (error) {
+                    console.error('更改失败:', error);
+                    this.errorMessage = '更改失败，请稍后再试';
+                }
+                    
+            } 
+        },
+
     close() {
       this.$emit('close');
     },
+
   },
 }
 </script>
   
 <style>
   .mydetail {
+    z-index: 1;
     position: fixed;
     top: 50%;
     left: 50%;

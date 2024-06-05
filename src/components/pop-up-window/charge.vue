@@ -17,17 +17,21 @@
 </template>
   
 <script>
+import { errorMessages } from 'vue/compiler-sfc';
+
 export default {
     data() {
         return {
             cash: 10000, // 初始现金数
             rechargeAmount: 0, // 充值金额
+            errorMessages:''//错误信息
         };
     },
     methods: {
         close() {
             this.$emit('close');
         },
+        
         confirmRecharge() {
             if (this.rechargeAmount > 0) {
                 this.cash += this.rechargeAmount; // 增加现金
@@ -36,6 +40,38 @@ export default {
             } else {
                 alert('请输入有效的充值金额');
             }
+        },
+
+        async handleSubmit() {
+            if (this.isFormValid) {
+                // 这里可以提交表单数据到后端保存用户注册信息
+                try {
+                    //将这四个参数传到后端
+                    const response = await axios.post('http://127.0.0.1:5000/user/charge', {
+                        'username': this.username,
+                        'password': this.password,
+                        'cash':this.cash
+                    });
+                    const data = response.data; //data的数据结构，例如：{'result':True\Flase,'message':successful}
+                    if (data.get('result')) {
+                        alert('充值成功');
+                        // 修改成功
+
+                    
+                    } else {
+                        this.errorMessage = data.message;
+                    }
+                    } catch (error) {
+                    console.error('更改失败:', error);
+                    this.errorMessage = '更改失败，请稍后再试';
+                }
+                    
+                // console.log('用户名:', this.username);
+                // console.log('密码:', this.password);
+                // 清空表单数据
+                // this.password = '';
+                // this.confirmPassword = '';
+            } 
         },
     },
 };

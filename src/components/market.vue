@@ -1,6 +1,7 @@
 <template>
+    <div class="background-layer"></div>
     <div class="logo-container1">
-        <img src="../../public/logo.jpg" alt="logo">
+        <img src="../../logo.jpg" alt="logo">
     </div>
     <div class="top-label">
         <div class="top-value">欢 迎 来 到 金 霸 霸 量 化 交 易 平 台 ！您 的 最 佳 选 择 !</div>
@@ -9,16 +10,16 @@
     </div>
     <div class="top-buttons-container">
         <div class="top-buttons">
-            <button class="top-button" @click="getInhomepage">首页</button>
+            <button class="top-button" @click="getInhomepage(username)">首页</button>
             <button class="top-button1">市场行情</button>
-            <button class="top-button" @click="getIntrade">模拟交易</button>
-            <button class="top-button" @click="getInstrategy">策略</button>
-            <button class="top-button" @click="getInfactor">因子回测</button>
+            <button class="top-button" @click="getIntrade(username)">模拟交易</button>
+            <button class="top-button" @click="getInstrategy(username)">策略</button>
+            <button class="top-button" @click="getInfactor(username)">因子回测</button>
             <button class="top-button" @click="switchToLogin">退出账号</button>
         </div>
     </div> 
     <div class="middle-buttons-container">
-        <button class="index-button" @click="goToMarketDetail('000001')">
+        <button class="index-button" @click="goToMarketDetail('000001',username)">
             <div class="button-label">上证指数</div>
             <div class="button-info">
                 <div class="code">代码:000001</div>
@@ -26,7 +27,7 @@
                 <div class="percentage">涨跌：+1.2%</div>
             </div>
         </button>
-        <button class="index-button" @click="goToMarketDetail('399001')">
+        <button class="index-button" @click="goToMarketDetail('399001',username)">
             <div class="button-label">深证指数</div>
             <div class="button-info">
                 <div class="code">代码:399001</div>
@@ -34,7 +35,7 @@
                 <div class="percentage">涨跌：-0.8%</div>
             </div>
         </button>
-        <button class="index-button" @click="goToMarketDetail('399005')">
+        <button class="index-button" @click="goToMarketDetail('399005',username)">
             <div class="button-label">北交指数</div>
             <div class="button-info">
                 <div class="code">代码:399005</div>
@@ -42,7 +43,7 @@
                 <div class="percentage">涨跌：+0.5%</div>
             </div>
         </button>
-        <button class="index-button" @click="goToMarketDetail('000300')">
+        <button class="index-button" @click="goToMarketDetail('000300',username)">
             <div class="button-label">沪深300</div>
             <div class="button-info">
                 <div class="code">代码:000300</div>
@@ -64,9 +65,15 @@
   
 <script>
 export default {
+    props: {
+        username: {
+            type: String,
+            required: true
+        }
+    },
     data() {
         return {
-            username: 'John Doe', // 用户名
+            
             price001: 0, // 上证指数价格
             price399: 0, // 深证指数价格
             price3995: 0, // 北交指数价格
@@ -86,7 +93,7 @@ export default {
                 const code = this.searchQuery.toString();
                 
                 // 调用父组件方法跳转到市场详情页面
-                this.goToMarketDetail(code);
+                this.goToMarketDetail(code,this.username);
                
                 // 重置搜索框和未找到消息
                 this.searchQuery = '';
@@ -105,23 +112,23 @@ export default {
         switchToLogin() {
             this.$emit('switchToLogin'); 
         },
-        getInhomepage() {
-            this.$emit('getInhomepage');
+        getInhomepage(username) {
+            this.$emit('getInhomepage', username); 
         },
-        getInmarket() {
-            this.$emit('getInmarket'); 
+        getInmarket(username) {
+            this.$emit('getInmarket', username);
         },
-        getIntrade() {
-            this.$emit('getIntrade'); 
+        getIntrade(username) {
+            this.$emit('getIntrade', username);
         },
-        getInstrategy() {
-            this.$emit('getInstrategy');
+        getInstrategy(username) {
+            this.$emit('getInstrategy', username);
         },
-        getInfactor() {
-            this.$emit('getInfactor');
+        getInfactor(username) {
+            this.$emit('getInfactor', username);
         },
-        goToMarketDetail(code) {
-            this.$emit('goToMarketDetail', code);
+        goToMarketDetail(code,username) {
+            this.$emit('goToMarketDetail', code, username);
         }
         
     }
@@ -170,6 +177,7 @@ export default {
   
 .form2 {
     border: 1px solid #727171;
+    background-color: aliceblue;
     border-radius: 5px;
     padding: 30px; /* 减小内边距以缩小表单 */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -202,6 +210,9 @@ export default {
     transform: translateX(-50%); /* 平移自身宽度的一半 */
 }
 
+.search-container-button:hover {
+    background-color: rgb(25, 42, 227);
+}
 .error-message-box2 {
     position: absolute; /* 设置报错信息框为绝对定位 */
     bottom: 150px; /* 距离浮窗容器底部的距离为0 */

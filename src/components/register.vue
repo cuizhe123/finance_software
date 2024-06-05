@@ -81,13 +81,13 @@ export default {
         try {
           //将这四个参数传到后端
           const response = await axios.post('http://127.0.0.1:5000/user/register', {
-            username: this.username,
-            password: this.password,
-            question: 'defaultQuestion', // 假设问题固定，实际情况中应该动态获取
-            answer: 'defaultAnswer' // 假设答案固定，实际情况中应该动态获取
+            'username': this.username,
+            'password': this.password,
+            'question': 'defaultQuestion', // 假设问题固定，实际情况中应该动态获取
+            'answer': 'defaultAnswer' // 假设答案固定，实际情况中应该动态获取
           });
           const data = response.data; //data的数据结构，例如：{'result':True,'message':successful}
-          if (data.result) {
+          if (data.get('result')) {
             alert('注册成功');
             // 注册成功，跳转到登录或者首页
 
