@@ -24,6 +24,12 @@
     
 <script>
   export default {
+    props: {
+      username: {
+        type: String,
+        required: true
+      },
+    },
     data() {
       return {
         password: '',
@@ -44,6 +50,7 @@
         },
         handleSubmit() {
             if (this.isFormValid) {
+                //已知了username,找到对应的并修改
                 // 这里可以提交表单数据到后端保存用户注册信息
                 console.log('用户名:', this.username);
                 console.log('密码:', this.password);
@@ -75,7 +82,7 @@
     
 <style>
     .information {
-        z-index: 1;
+        z-index: 2;
         position: fixed;
         top: 50%;
         left: 50%;

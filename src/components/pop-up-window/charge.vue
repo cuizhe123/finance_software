@@ -18,6 +18,12 @@
   
 <script>
 export default {
+    props: {
+      username: {
+        type: String,
+        required: true
+      },
+    },
     data() {
         return {
             cash: 10000, // 初始现金数
