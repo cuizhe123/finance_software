@@ -20,7 +20,7 @@
     </div>
     <div class="strategy-container" v-for="index in 5" :key="index">
         <div class="strategy-label">因子 {{ index }}</div>
-        <button class="strategy-button" @click="goTofactor(index,username)">按钮 {{ index }}</button>
+        <button class="strategy-button" @click="goTofactor(index,username)"> {{ factorArray[index-1] }}</button>
     </div>
   </template>
   
@@ -35,6 +35,13 @@ export default {
     data() {
         return {
             index:1, //策略编号
+            factorArray: [
+            '优加换手率',
+            '量价波动趋势',
+            '量价波动性',
+            '量价相关性',
+            'ideal_reverse'
+            ]
         };
     },
     methods: {
