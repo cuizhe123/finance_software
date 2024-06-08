@@ -86,7 +86,7 @@ export default {
     left: 30px;
     width: 300px; /* 设置一个固定的宽度 */
     height: 50px;
-    top:0px;
+    top:5px;
     background-color: #2fb1f2;
     
   } 

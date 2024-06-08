@@ -1,9 +1,9 @@
 <template>
+   <!-- 欢迎条幅 -->
+  <div class="welcome-banner">
+    <div class="top-value">欢 迎 来 到 金 霸 霸 量 化 交 易 平 台 !</div>
+  </div>
   <div class="container">
-    <!-- 欢迎条幅 -->
-    <div class="welcome-banner">
-      <p>欢迎来到金霸霸量化交易平台</p>
-    </div>
     <!-- Logo 和 注册表单 -->
     <div class="header">
       <div class="logo-container">
@@ -13,19 +13,29 @@
       <div class="form-container">
         <h1>注册</h1>
         <form @submit.prevent="handleSubmit" class="form">
-          <div class="form-group">
-            <label for="username">用户名:</label>
-            <input type="text" id="username" v-model="username" required @blur="validateUsername">
+          <div class="form-group-container">
+            <div class="form-group">
+              <label for="username">用户名:</label>
+              <input type="text" id="username" v-model="username" required @blur="validateUsername">
+            </div>
+            <div class="form-group">
+              <label for="password"> 密 码 :&nbsp;</label>
+              <input type="password" id="password" v-model="password" required @blur="validatePassword">
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword">确认密码:</label>
+              <input type="password" id="confirmPassword" v-model="confirmPassword" required @blur="validateConfirmPassword">
+            </div>
+            <div class="form-group">
+              <label for="question">密保问题:</label>
+              <input type="question" id="question" v-model="question" required >
+            </div> <div class="form-group">
+              <label for="answer">密保答案:</label>
+              <input type="answer" id="answer" v-model="answer" required >
+            </div>
+            <button type="submit" :disabled="!isFormValid">注册</button>
           </div>
-          <div class="form-group">
-            <label for="password"> 密 码 :&nbsp;</label>
-            <input type="password" id="password" v-model="password" required @blur="validatePassword">
-          </div>
-          <div class="form-group">
-            <label for="confirmPassword">确认密码:</label>
-            <input type="password" id="confirmPassword" v-model="confirmPassword" required @blur="validateConfirmPassword">
-          </div>
-          <button type="submit" :disabled="!isFormValid">注册</button>
+          
         </form>
         <button @click="switchToLogin">切换为登录</button>
       </div>
@@ -50,6 +60,8 @@ export default {
       username: '',
       password: '',
       confirmPassword: '', 
+      question: '',
+      answer:'',
       isPasswordValid: true,
       isUsernameValid: true,
       isConfirmPasswordValid: true,
@@ -153,12 +165,13 @@ export default {
 
 /* 欢迎条幅样式 */
 .welcome-banner {
+  position: absolute;
   background-color: #4CAF50; /* 绿色背景 */
-  color: white;
-  padding: 40px 0;
-  text-align: center;
-  margin-bottom: 50px;
-  width: 100%; /* 横幅宽度填满父容器 */
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100px; /* 设置标签的高度 */
+  width: 100%; /* 宽度与父容器相同 */
 }
 
 .header {
@@ -176,6 +189,7 @@ export default {
   margin-left: 250px; /* 增加左侧间距 */
   max-width: 600px; /* 设置最大宽度 */
   width: 100%; /* 宽度填满父容器 */
+  height: 100%;
 }
 
 .form {
@@ -183,10 +197,18 @@ export default {
   border-radius: 5px;
   padding: 90px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  height:450px
 }
 
+.form-group-container{
+  position: relative;
+  top:-60px;
+  height: 100%;
+}
 .form-group {
-  margin-bottom: 30px;
+  position: relative;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
 }
@@ -200,6 +222,7 @@ export default {
   padding: 10px;
   box-sizing: border-box;
   margin-left: 10px; /* 添加左边距 */
+  margin-top: 10px
 }
 
 button {
@@ -212,10 +235,13 @@ button {
   display: block;
   margin: 0 auto;
   width: 100%; /* 填满整个页面宽度 */
-  margin-top: 20px; /* 添加上边距 */
+  margin-top: -30px; /* 添加上边距 */
+  margin-bottom: -30px; /* 添加上边距 */
 }
 
 .error-message-box {
+  position: absolute;
+  bottom: 6%;
   background-color: red; /* 设置背景为红色 */
   color: white; /* 设置字体为白色 */
   border-radius: 5px; /* 设置边框圆角 */

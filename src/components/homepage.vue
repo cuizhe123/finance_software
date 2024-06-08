@@ -29,26 +29,26 @@
         <div class="info-label">用户名:</div>
         <div class="info-value">{{ username }}</div>
         <button class="info-button" @click="openaccount">账户设置</button>
-        <information v-if="accountOpen" @close="closeaccount" />
+        <information v-if="accountOpen" :username="username" @close="closeaccount" />
     </div>
     <!-- 现金标签 -->
     <div class="user-info">
         <div class="info-label">金额:</div>
         <div class="info-value">{{ cash }}</div>
         <button class="info-button" @click="opencharge">充值金额</button>
-        <charge v-if="chargeOpen" @close="closecharge" />
+        <charge v-if="chargeOpen" :username="username" @close="closecharge" />
     </div>
     <!-- 持仓量标签 -->
     <div class="user-info">
         <div class="info-label">持仓量:</div>
         <div class="info-value">{{ holdings }}</div>
         <button class="info-button" @click="openmydetail">持仓详情</button>
-        <mydetail v-if="mydetailOpen" @close="closemydetail" />
+        <mydetail v-if="mydetailOpen" :username="username" @close="closemydetail" />
     </div>
     <div class="user-info">
         <div class="info-label1">交易历史</div>
         <button class="info-button" @click="openmyhistory">历史详情</button>
-        <myhistory v-if="myhistoryOpen" @close="closemyhistory" />
+        <myhistory v-if="myhistoryOpen" :username="username" @close="closemyhistory" />
     </div>
 </template>
 
