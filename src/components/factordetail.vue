@@ -171,19 +171,6 @@
     width: 700px; /* 调整logo图片宽度 */
   }
   
-  .section4 {
-    position: absolute;
-    background-color: #4cc3e0;
-    padding: 14px 15px;
-    border-radius: 5px;
-    width: 60%; /* 设置一个固定的宽度 */
-    height: 20%;
-    top:80%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    margin-bottom: 20px; /* 调整各部分之间的间距 */
-  }
   
   .section-label {
     width: 150px; /* 设置标签的宽度 */
