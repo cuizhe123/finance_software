@@ -20,7 +20,7 @@
     </div>
     <div class="strategy-container" v-for="index in 5" :key="index">
         <div class="strategy-label">策略 {{ index }}</div>
-        <button class="strategy-button" @click="goTostrategy(index,username)">按钮 {{ index }}</button>
+        <button class="strategy-button" @click="goTostrategy(index,username)">{{strategyArray[index-1]}}</button>
     </div>
   </template>
   
@@ -35,6 +35,13 @@ export default {
     data() {
         return {
             index:1, //策略编号
+            strategyArray: [
+            'SVM',
+            'RNN',
+            'LSTM',
+            'GRU',
+            '集成策略'
+            ],
         };
     },
     methods: {
