@@ -17,6 +17,7 @@
 </template>
     
 <script>
+import axios from 'axios';
 import buyin from './buyin.vue';
 import sellout from './sellout.vue';
 

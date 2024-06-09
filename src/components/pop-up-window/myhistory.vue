@@ -16,14 +16,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(stock, index) in stocks" :key="index">
-              <td>{{ stock.get('time') }}</td>
-              <td>{{ stock.get('number') }}</td>
-              <td>{{ stock.get('code') }}</td>
-              <td>{{ stock.get('buysell') }}</td>
-              <td>{{ stock.get('price') }}</td>
-              <td>{{ stock.get('quantity') }}</td>
-              <td>{{ stock.get('gain') }}</td>
+            <tr v-for="(item, index) in history" :key="index">
+              <td>{{ item.time }}</td>
+              <td>{{ item.number}}</td>
+              <td>{{ item.code}}</td>
+              <td>{{ item.buysell}}</td>
+              <td>{{ item.price }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.gain }}</td>
             </tr>
           </tbody>
         </table>
@@ -32,6 +32,7 @@
   </template>
     
   <script>
+  import axios from 'axios';
   export default {
     props: {
       username: {
@@ -41,29 +42,32 @@
     },
     data() {
       return {
-        stocks: [
+        history: [
           { 'time':0 , 'number':0 , 'code': '001','buysell':'买', 'price': 10.5, 'quantity': 100,'gain':0 },
         ]
       };
     },
+    mounted()
+    {
+      this.GetHistory()
+    },
     methods: {
-      async handleSubmit() {
-            if (this.isFormValid) {
+      async GetHistory() {
                 // 这里可以提交表单数据到后端保存用户注册信息
                 try {
                     //将这四个参数传到后端
-                    const response = await axios.post('http://127.0.0.1:5000/user/mystock', {
+                    const response = await axios.post('http://127.0.0.1:5000/user/history', {
                         'username': this.username,
                     });
                     const data = response.data; //data的数据结构，[{ 'time':0 , 'number':0 , 'code': '001','buysell':'买', 'price': 10.5, 'quantity': 100,'gain':0 },{...},{...}]
-                    this.stocks = data.get('result');
-                    
+                    this.history = data.result;
+                    console.log('我的交易历史')
                     } catch (error) {
-                    console.error('更改失败:', error);
-                    this.errorMessage = '更改失败，请稍后再试';
+                    console.error('查看历史失败:', error);
+                    this.errorMessage = '查看历史失败，请稍后再试';
                 }
                     
-            } 
+          
         },
 
       close() {

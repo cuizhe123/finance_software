@@ -40,8 +40,8 @@
     </div>
     <!-- 持仓量标签 -->
     <div class="user-info">
-        <div class="info-label">持仓量:</div>
-        <div class="info-value">{{ holdings }}</div>
+        <div class="info-label">持仓量</div>
+        <div class="info-value">{{ stock_value }}</div>
         <button class="info-button" @click="openmydetail">持仓详情</button>
         <mydetail v-if="mydetailOpen" :username="username" @close="closemydetail" />
     </div>
@@ -57,6 +57,7 @@ import Myhistory from './pop-up-window/myhistory.vue';
 import Mydetail from './pop-up-window/mydetail.vue';
 import Charge from './pop-up-window/charge.vue';
 import Information from './pop-up-window/information.vue';
+import axios from 'axios';
 export default {
     props: {
         username: {
@@ -70,7 +71,71 @@ export default {
         Charge,
         Information
     },
+    emits: ['getInhomepage', 'getInmarket', 'getIntrade', 'getInstrategy', 'getInfactor', 'switchToLogin'],
     methods: {
+        async GetMessage(user_name) {
+          try {
+                  // 发送异步请求到后端验证用户名和密码
+                  const response = await axios.post('http://127.0.0.1:5000/user/by_name', {
+                      'username': user_name
+                  });
+                  // 后端返回验证结果
+                //成功的话，返回[user的信息,'successful']，失败的话返回[None,错误信息]
+              const data = response.data;
+              const user = data.user;
+            //   console.log('data', data);
+            //   console.log('user', data.user);
+                // console.log(data.user.name)
+              if (data.user != null) {
+                  this.cash = user.money;
+                    //登录成功，进行跳转或其他操作
+                      //user的结构：{'id':0, 'name':0, 'password':0, 'question':0, 'answer':0, 'money':0}
+                  } else {
+                      // 显示错误消息
+                      this.errorMessage = '用户名或密码错误';
+                  }
+              } catch (error) {
+                  console.error('请求失败:', error);
+                  // 显示通用错误消息
+                  this.errorMessage = '失败，请稍后重试';
+              }
+        },
+        async getmystockvalue(user_name) {
+                // 这里可以提交表单数据到后端保存用户注册信息
+                try {
+                    //将这四个参数传到后端
+                    const response = await axios.post('http://127.0.0.1:5000/user/mystock', {
+                        'username': user_name,
+                    });
+                    const data = response.data; //data的数据结构，[{'name': ,'code': ,'price': ,'quantity': },{...},{...}]
+                    const my_stock = data.result;//[{'name': ,'code': ,'price': ,'quantity': },{...},{...}]
+                    if(my_stock != null) {
+                        for (let i = 0; i < my_stock.length; i++)
+                        {
+                            let stock = my_stock[i];
+                            try {
+                                //将这四个参数传到后端
+                                const response2 = await axios.post('http://127.0.0.1:5000/user/mystock', {
+                                    'code': stock.code
+                                });
+                                const stock_now = response.data.result;
+                                this.stock_value += stock.quantity * stock_now.price;
+                            }
+                            catch (error) {
+                                console.error('查看股票信息失败:', error);
+                                this.errorMessage = '查看股票信息失败，请稍后再试';
+                            }
+                        }
+                    }
+                    else {
+                        this.stock_value = 0;
+                    }
+                }
+                catch (error) {
+                  console.error('查看持仓失败:', error);
+                    this.errorMessage = '查看持仓失败，请稍后再试';
+                }
+        },
         switchToLogin() {
             this.$emit('switchToLogin'); 
         },
@@ -94,36 +159,44 @@ export default {
         },
         closemydetail() {
             this.mydetailOpen = false;
+            this.GetMessage(this.username);
         },
         opencharge() {
             this.chargeOpen = true;
         },
         closecharge() {
             this.chargeOpen = false;
+            this.GetMessage(this.username);
         },
         openaccount() {
             this.accountOpen = true;
         },
         closeaccount() {
             this.accountOpen = false;
+            this.GetMessage(this.username);
         },
         openmyhistory() {
             this.myhistoryOpen = true;
         },
         closemyhistory() {
             this.myhistoryOpen = false;
+            this.GetMessage(this.username);
         },
     },
     data() {
         return {
-            
-            cash: 10000, // 现金
+            cash: 0, // 现金
             holdings: 10, // 持仓量
             mydetailOpen: false,
             chargeOpen: false,
             accountOpen: false,
-            myhistoryOpen: false
+            myhistoryOpen: false,
+            stock_value: 0,
         };
+    },
+    mounted() {
+        this.GetMessage(this.username);
+        this.getmystockvalue(this.username);
     }
 }
 </script>

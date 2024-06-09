@@ -18,6 +18,7 @@
 </template>
     
 <script>
+import axios from 'axios';
 import Information from './information.vue';
   export default {
     props: {

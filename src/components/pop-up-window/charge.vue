@@ -18,20 +18,24 @@
   
 <script>
 import { errorMessages } from 'vue/compiler-sfc';
-
+import axios from 'axios';
 export default {
     props: {
       username: {
         type: String,
         required: true
-      },
+        },
     },
     data() {
         return {
             cash: 10000, // 初始现金数
             rechargeAmount: 0, // 充值金额
-            errorMessages:''//错误信息
+            errorMessages: '',//错误信息
+            password:''
         };
+    },
+    mounted() {
+        this.GetMessage(this.username);
     },
     methods: {
         close() {
@@ -40,30 +44,31 @@ export default {
         
         confirmRecharge() {
             if (this.rechargeAmount > 0) {
+                console.log('进入');
                 this.cash += this.rechargeAmount; // 增加现金
                 this.rechargeAmount = 0; // 清空充值金额
+                this.change_money()
           // 可以在这里触发事件通知父组件充值成功
             } else {
                 alert('请输入有效的充值金额');
             }
         },
 
-        async handleSubmit() {
-            if (this.isFormValid) {
-                // 这里可以提交表单数据到后端保存用户注册信息
+        async change_money() {
+            console.log('进入change')
                 try {
-                    //将这四个参数传到后端
+                    //将这3个参数传到后端
                     const response = await axios.post('http://127.0.0.1:5000/user/charge', {
                         'username': this.username,
                         'password': this.password,
                         'cash':this.cash
                     });
+                    console.log('cash',this.cash)
                     const data = response.data; //data的数据结构，例如：{'result':True\Flase,'message':successful}
-                    if (data.get('result')) {
+                    if (data.result) {
                         alert('充值成功');
                         // 修改成功
-
-                    
+                        this.$emit('close');
                     } else {
                         this.errorMessage = data.message;
                     }
@@ -71,13 +76,34 @@ export default {
                     console.error('更改失败:', error);
                     this.errorMessage = '更改失败，请稍后再试';
                 }
-                    
-                // console.log('用户名:', this.username);
-                // console.log('密码:', this.password);
-                // 清空表单数据
-                // this.password = '';
-                // this.confirmPassword = '';
-            } 
+            
+        },
+        async GetMessage(user_name) {
+          try {
+            console.log(user_name);
+            console.log(111);
+                  // 发送异步请求到后端验证用户名和密码
+                  const response = await axios.post('http://127.0.0.1:5000/user/by_name', {
+                      'username': user_name
+                  });
+                  // 后端返回验证结果
+                //成功的话，返回[user的信息,'successful']，失败的话返回[None,错误信息]
+              const data = response.data;
+              const user = data.user;
+                // console.log(data.user.name)
+              if (data.user != null) {
+                  this.password = user.password
+                  this.cash = user.money
+                  //user的结构：{'id':0, 'name':0, 'password':0, 'question':0, 'answer':0, 'money':0}
+                  } else {
+                      // 显示错误消息
+                      this.errorMessage = '用户名错误';
+                  }
+              } catch (error) {
+                  console.error('请求失败:', error);
+                  // 显示通用错误消息
+                  this.errorMessage = '失败，请稍后重试';
+              }
         },
     },
 };

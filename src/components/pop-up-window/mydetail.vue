@@ -14,10 +14,10 @@
         </thead>
         <tbody>
           <tr v-for="(stock, index) in stocks" :key="index">
-            <td>{{ stock.get('name') }}</td>
-            <td>{{ stock.get('code') }}</td>
-            <td>{{ stock.get('price') }}</td>
-            <td>{{ stock.get('quantity') }}</td>
+            <td>{{ stock.name }}</td>
+            <td>{{ stock.code }}</td>
+            <td>{{ stock.price }}</td>
+            <td>{{ stock.quantity }}</td>
           </tr>
         </tbody>
       </table>
@@ -26,6 +26,7 @@
 </template>
   
 <script>
+import axios from 'axios';
 export default {
   props: {
       username: {
@@ -36,30 +37,31 @@ export default {
   data() {
     return {
       stocks: [
-        { 'name': '股票A', 'code': '001', 'price': 10.5, 'quantity': 100 },
-        { 'name': '股票B', 'code': '002', 'price': 20.3, 'quantity': 150 },
-        { 'name': '股票C', 'code': '003', 'price': 15.8, 'quantity': 80 },
+        { 'name': '无', 'code': '000', 'price': 0, 'quantity': 0 },
       ]
     };
   },
+  mounted()
+  {
+    this.getmystock(this.username)
+  },
   methods: {
-    async handleSubmit() {
-            if (this.isFormValid) {
+    async getmystock(user_name) {
                 // 这里可以提交表单数据到后端保存用户注册信息
                 try {
                     //将这四个参数传到后端
-                    const response = await axios.post('http://127.0.0.1:5000/user/history', {
-                        'username': this.username,
+                    const response = await axios.post('http://127.0.0.1:5000/user/mystock', {
+                        'username': user_name,
                     });
-                    const data = response.data; //data的数据结构，[{'name': ,'code': ,'price': ,'quantity': },{...},{...}]
-                    this.stocks = data.get('result');
-                 
-                    } catch (error) {
-                    console.error('更改失败:', error);
-                    this.errorMessage = '更改失败，请稍后再试';
+                  const data = response.data; //data的数据结构，[{'name': ,'code': ,'price': ,'quantity': },{...},{...}]
+                  const my_stock = data.result
+                  console.log('我的持仓', data)
+                    this.stocks = my_stock;
                 }
-                    
-            } 
+                catch (error) {
+                  console.error('查看持仓失败:', error);
+                    this.errorMessage = '查看持仓失败，请稍后再试';
+                }
         },
 
     close() {

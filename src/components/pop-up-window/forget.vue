@@ -17,6 +17,7 @@
 </template>
     
 <script>
+import axios from 'axios';
   import Answerquestion from './answerquestion.vue';
   export default {
     components: {

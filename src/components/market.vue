@@ -64,6 +64,7 @@
 </template>
   
 <script>
+import axios from 'axios';
 export default {
     props: {
         username: {
@@ -71,6 +72,7 @@ export default {
             required: true
         }
     },
+    emits: ['getInhomepage', 'getIntrade', 'getInstrategy', 'getInfactor', 'switchToLogin', 'goToMarketDetail'],
     data() {
         return {
             

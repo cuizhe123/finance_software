@@ -21,7 +21,7 @@
                       <label for="password">密 码:&nbsp;</label>
                       <input type="password" id="password" v-model="password" required autocomplete="off">
                     </div>
-                    <button @click="getInhomepage(username)" class="">登录</button>
+                    <button @click="handleSubmit(username,password)" class="">登录</button>
                     <button class="forgot-password-button" @click="openforget">忘记密码？</button>
                     <forget v-if="forgetOpen" @close="closeforget" />
                   </div>
@@ -38,6 +38,7 @@
 </template>
   
 <script>
+import axios from 'axios';
 import Forget from './pop-up-window/forget.vue';
 export default {
     components: {
@@ -52,27 +53,33 @@ export default {
         };
     },
     methods: {
-        async handleSubmit() {
-            try {
-                // 发送异步请求到后端验证用户名和密码
-                const response = await axios.post('http://127.0.0.1:5000/user/login', {
-                    'username': this.username,
-                    'password': this.password
-                });
-                // 后端返回验证结果
-                //成功的话，返回[user的信息,'successful']，失败的话返回[None,错误信息]
-                if (response.data.get('user') != None) {
+        async handleSubmit(user_name,pass_word) {
+          try {
+            console.log(111);
+                  // 发送异步请求到后端验证用户名和密码
+                  const response = await axios.post('http://127.0.0.1:5000/user/login', {
+                      'username': user_name,
+                      'password': pass_word
+                  });
+                  // 后端返回验证结果
+            //成功的话，返回[user的信息,'successful']，失败的话返回[None,错误信息]
+            const data = response.data;
+            console.log(222);
+            // console.log(data.user.name)
+                  if (data.user != null) {
                     //登录成功，进行跳转或其他操作
-                    //user的结构：{'id':0, 'name':0, 'password':0, 'question':0, 'answer':0, 'money':0}
-                } else {
-                    // 显示错误消息
-                    this.errorMessage = '用户名或密码错误';
-                }
-            } catch (error) {
-                console.error('登录请求失败:', error);
-                // 显示通用错误消息
-                this.errorMessage = '登录失败，请稍后重试';
-            }
+                    console.log("进入首页")
+                    this.$emit('getInhomepage', data.user.name);
+                      //user的结构：{'id':0, 'name':0, 'password':0, 'question':0, 'answer':0, 'money':0}
+                  } else {
+                      // 显示错误消息
+                      this.errorMessage = '用户名或密码错误';
+                  }
+              } catch (error) {
+                  console.error('登录请求失败:', error);
+                  // 显示通用错误消息
+                  this.errorMessage = '登录失败，请稍后重试';
+              }
         },
         switchToRegister() {
           this.$emit('switchToRegister'); // 触发自定义事件

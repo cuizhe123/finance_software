@@ -12,7 +12,7 @@
       
       <div class="form-container">
         <h1>注册</h1>
-        <form @submit.prevent="handleSubmit" class="form">
+        <form @submit.prevent="handleSubmit(username,password,question,answer)" class="form">
           <div class="form-group-container">
             <div class="form-group">
               <label for="username">用户名:</label>
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   data() {
     return {
@@ -88,23 +89,21 @@ export default {
     //   } 
     // },
 
-    async handleSubmit() {
+    async handleSubmit(user_name,pass_word,ques_tion,ans_wer) {
       if (this.isFormValid) {
         try {
           //将这四个参数传到后端
           const response = await axios.post('http://127.0.0.1:5000/user/register', {
-            'username': this.username,
-            'password': this.password,
-            'question': 'defaultQuestion', // 假设问题固定，实际情况中应该动态获取
-            'answer': 'defaultAnswer' // 假设答案固定，实际情况中应该动态获取
+            'username': user_name,
+            'password': pass_word,
+            'question': ques_tion, // 假设问题固定，实际情况中应该动态获取
+            'answer': ans_wer // 假设答案固定，实际情况中应该动态获取
           });
           const data = response.data; //data的数据结构，例如：{'result':True,'message':successful}
-          if (data.get('result')) {
+          if (data.result) {
             alert('注册成功');
+            this.$emit('switchToLogin');
             // 注册成功，跳转到登录或者首页
-
-
-            
           } else {
             this.errorMessage = data.message;
           }

@@ -1,6 +1,6 @@
 <template>
     <div class="information">
-        <button class="exit-button" @click="close">关闭</button>
+        <button class="exit-button" @click="close" >关闭</button>
         <form @submit.prevent="handleSubmit" class="form1">
             <div class="new-password">
                 <label for="password"> 新密码 :</label>
@@ -12,7 +12,7 @@
             </div>
             
         </form> 
-        <button class="info-button1" type="submit" :disabled="!isFormValid">更改密码</button>
+        <button class="info-button1" type="submit" :disabled="!isFormValid" @click="change_password(username,old_password,password,question,answer)" >更改密码</button>
         <div v-if="!isPasswordValid && password && errorPriority === 'password'" class="error-message-box1">
             <span class="error-message1">密码不符规则,必须包含大小写字母和数字,且长度为8位到12位</span>
         </div>
@@ -23,6 +23,7 @@
 </template>
     
 <script>
+import axios from 'axios';
   export default {
     props: {
       username: {
@@ -31,13 +32,19 @@
       },
     },
     data() {
-      return {
+        return {
+        old_password:'',
         password: '',
         confirmPassword: '', 
         isPasswordValid: true,
         isConfirmPasswordValid: true,
-        errorPriority: '' // 用于跟踪错误消息的优先级
+        errorPriority: '', // 用于跟踪错误消息的优先级
+        question: '',
+        answer:''
       };
+    },
+    mounted() {
+        this.GetMessage(this.username);
     },
     computed: {
         isFormValid() {
@@ -48,26 +55,24 @@
         close() {
             this.$emit('close');
         },
-        async handleSubmit() {
+        async change_password(username,old_password,new_password,question,answer) {
             if (this.isFormValid) {
                 //已知了username,找到对应的并修改
                 // 这里可以提交表单数据到后端保存用户注册信息
                 try {
                     //将这四个参数传到后端
                     const response = await axios.post('http://127.0.0.1:5000/user/change', {
-                        'username': this.username,
-                        'old_password': this.old_password,
-                        'new_password': this.new_password,
-                        'question': this.question, 
-                        'answer': this.anwser 
+                        'username': username,
+                        'old_password': old_password,
+                        'new_password': new_password,
+                        'question': question, 
+                        'answer': answer 
                     });
                     const data = response.data; //data的数据结构，例如：{'result':True,'message':successful}
-                    if (data.get('result')) {
+                    if (data.result) {
                         alert('修改成功');
+                        console.log("修改成功",old_password)
                         // 修改成功
-
-                    
-                        
                     } else {
                         this.errorMessage = data.message;
                     }
@@ -82,6 +87,37 @@
                 // this.password = '';
                 // this.confirmPassword = '';
             } 
+        },
+        
+        async GetMessage(user_name) {
+          try {
+            console.log(user_name);
+            console.log(111);
+                  // 发送异步请求到后端验证用户名和密码
+                  const response = await axios.post('http://127.0.0.1:5000/user/by_name', {
+                      'username': user_name
+                  });
+                  // 后端返回验证结果
+                //成功的话，返回[user的信息,'successful']，失败的话返回[None,错误信息]
+              const data = response.data;
+              const user = data.user;
+                // console.log(data.user.name)
+              if (data.user != null) {
+                  this.question = user.question
+                  this.answer = user.answer
+                  this.old_password = user.password
+                    //登录成功，进行跳转或其他操作
+                  //user的结构：{'id':0, 'name':0, 'password':0, 'question':0, 'answer':0, 'money':0}
+                      
+                  } else {
+                      // 显示错误消息
+                      this.errorMessage = '用户名或密码错误';
+                  }
+              } catch (error) {
+                  console.error('登录请求失败:', error);
+                  // 显示通用错误消息
+                  this.errorMessage = '登录失败，请稍后重试';
+              }
         },
         validatePassword() {
             const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{8,12}$/;
