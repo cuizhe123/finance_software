@@ -22,11 +22,11 @@
         <div>请搜索您所要买卖的股票</div>
     </div>
     <div class="search-container1">
-        <form @submit.prevent="handleSubmit" class="form2">
-            <input type="number" class="search-container-input" v-model.number="searchQuery" @input="hideNotFoundMsg" @focus="isInputFocused = true" @blur="isInputFocused = false" placeholder="请输入证券代号" required>
+        <form @submit.prevent="Getstock" class="form2">
+            <input type="text" class="search-container-input" v-model="searchQuery" @input="hideNotFoundMsg" @focus="isInputFocused = true" @blur="isInputFocused = false" placeholder="请输入证券代号" required>
             <button type="submit" class="search-container-button">搜索</button>
         </form>
-        <tradewindow v-if="tradeOpen1" :code="code" @close="closetrade" />
+        <tradewindow v-if="tradeOpen1" :code="code":username = "username" @close="closetrade" />
     </div>
     <div v-if="showNotFoundMsg" class="error-message-box2">
         <span class="error-message2">无法找到您要查找的证券代号</span>
@@ -57,6 +57,7 @@
   
 <script>
 import tradewindow from './pop-up-window/tradewindow.vue';
+import axios from 'axios';
 export default {
     props: {
         username: {
@@ -71,19 +72,16 @@ export default {
         return {
             code: '',
             searchQuery: '', // 搜索框中的内容
-            securities: ['000001', '399001', '399005', '000300'], // 证券代号列表
+            market: ['sh000001','sz399001','bj899050','sh000300'], // 证券代号列表
             showNotFoundMsg: false, // 是否显示未找到代码的消息
             isInputFocused: false,// 输入框是否聚焦的标志
             tradeOpen1: false,
-            stocks: [
-                { name: '股票A', code: '001', price: 10.5, quantity: 100 },
-                { name: '股票B', code: '002', price: 20.3, quantity: 150 },
-                { name: '股票C', code: '003', price: 15.8, quantity: 80 },
-                { name: '股票D', code: '003', price: 15.8, quantity: 80 },
-                { name: '股票E', code: '003', price: 15.8, quantity: 80 },
-              
-            ]
+            stocks: []
         };
+    },
+    mounted()
+    {
+        this.getmystock();
     },
     methods: {
         switchToLogin() {
@@ -109,22 +107,62 @@ export default {
         },
         closetrade() {
             this.tradeOpen1 = false;
+            this.getmystock();
         },
-        handleSubmit() {
-            // 检查搜索的证券代码是否存在
-            if (this.searchQuery !== '' && this.securities.includes(this.searchQuery.toString())) {
-                this.code = this.searchQuery.toString();               
-                this.opentrade();
-                // 重置搜索框和未找到消息
-                this.searchQuery = '';
-                this.showNotFoundMsg = false;
-            } else {
-                // 显示未找到消息
-                if (!this.isInputFocused) {
-                    this.showNotFoundMsg = true;
+        async getmystock() {
+            // 这里可以提交表单数据到后端保存用户注册信息
+                try {
+                    //将这四个参数传到后端
+                    const response = await axios.post('http://127.0.0.1:5000/user/mystock', {
+                        'username': this.username,
+                    });
+                  const data = response.data; //data的数据结构，[{'name': ,'code': ,'price': ,'quantity': },{...},{...}]
+                  const my_stock = data.result
+                  console.log('我的持仓', data)
+                    this.stocks = my_stock;
+                    console.log(my_stock)
                 }
-            }
+                catch (error) {
+                  console.error('查看持仓失败:', error);
+                    this.errorMessage = '查看持仓失败，请稍后再试';
+                }
         },
+
+        async Getstock() {
+          try {
+                  // 发送异步请求到后端验证用户名和密码
+                  const response = await axios.post('http://127.0.0.1:5000/stock/stock_mess', {
+                      'code': this.searchQuery.toString()
+                  });
+              const data = response.data;
+              const stock = data.result;
+              this.code = this.searchQuery;
+              if (stock != null) {
+                  
+                if (this.market.includes(this.code)) {
+                this.showNotFoundMsg = true;
+                  }
+                else {
+                    this.searchQuery = '';
+                    this.opentrade();
+                this.showNotFoundMsg = false;
+                }
+                 
+                      //user的结构：{'id':0, 'name':0, 'password':0, 'question':0, 'answer':0, 'money':0}
+              }
+              else {
+                  // 显示错误消息
+                  this.errorMessage = 'code错误';
+                  this.showNotFoundMsg = true;
+              }
+          }
+          catch (error) {
+                  console.error('请求失败:', error);
+                  // 显示通用错误消息
+                  this.errorMessage = '失败，请稍后重试';
+              }
+        },
+       
         hideNotFoundMsg() {
             // 用户输入时隐藏未找到消息
             this.showNotFoundMsg = false;

@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     async getmystock(user_name) {
-                // 这里可以提交表单数据到后端保存用户注册信息
+      // 这里可以提交表单数据到后端保存用户注册信息
                 try {
                     //将这四个参数传到后端
                     const response = await axios.post('http://127.0.0.1:5000/user/mystock', {
@@ -55,7 +55,6 @@ export default {
                     });
                   const data = response.data; //data的数据结构，[{'name': ,'code': ,'price': ,'quantity': },{...},{...}]
                   const my_stock = data.result
-                  console.log('我的持仓', data)
                     this.stocks = my_stock;
                 }
                 catch (error) {

@@ -68,10 +68,20 @@
             </div>
         </div> 
     </div>
+
+     <!-- 绘图区域 -->
+     <div class="chart-container">
+        <canvas id="stockChart"></canvas>
+    </div>
   </template>
   
 <script>
 import axios from 'axios';
+import { onMounted } from 'vue';
+import { Chart, registerables } from 'chart.js';
+
+import 'chartjs-adapter-date-fns';
+Chart.register(...registerables);
 export default {
     data() {
         return {
@@ -83,7 +93,9 @@ export default {
         highest: 0,
         lowest: 0,
         totalVolume: 0,
-        turnoverRate: 0
+        turnoverRate: 0,
+            market: ['sh000001', 'sz399001', 'bj899050', 'sh000300'],
+        history:[]
         };
     },
     props: {
@@ -96,11 +108,124 @@ export default {
             required: true
         }
     },
+    mounted() {
+        this.Getstock();
+    },
     methods: {
-        
+
+        async Getstock() {
+          try {
+                  const response = await axios.post('http://127.0.0.1:5000/stock/stock_mess', {
+                      'code': this.code
+                  });
+              const data = response.data;
+              const stock = data.result;
+              if (stock != null) {
+                  //查找成功成功，进行跳转或其他操作
+                  if (this.market.includes(this.code)) {
+                      this.stockname= stock.market_name;  //股票名
+                      this.currentPrice= stock.price;
+                      this.changePercentage= stock.price_fluctuation;
+                      this.todayOpen= stock.today_open;
+                      this.yesterdayClose= stock.yesterday_end;
+                      this.highest= stock.high_price;
+                      this.lowest= stock.low_price;
+                      this.totalVolume= stock.amplitude;
+                      this.turnoverRate= 0;
+                  }
+                  else {
+                    this.stockname= stock.stock_name;  //股票名
+                      this.currentPrice= stock.price;
+                      this.changePercentage= stock.up_down;
+                      this.todayOpen= stock.today_open;
+                      this.yesterdayClose= stock.yester_price;
+                      this.highest= stock.high_price;
+                      this.lowest= stock.low_price;
+                      this.totalVolume= stock.amplitude;
+                      this.turnoverRate= stock.turnover_ratio;
+                  }
+                  this.Gethistory();   
+              }
+              else {
+                  // 显示错误消息
+                  this.errorMessage = 'code错误';
+                }
+          }
+          catch (error) {
+                  console.error('请求失败:', error);
+                  // 显示通用错误消息
+                  this.errorMessage = '失败，请稍后重试';
+              }
+        },
         getInmarket(username) {
             this.$emit('getInmarket', username);
         },
+        async Gethistory() {
+          try {
+                  const response = await axios.post('http://127.0.0.1:5000/stock/history', {
+                      'code': this.code
+                  });
+              const data = response.data;
+              const history = data.result;
+              if (stock != null) {
+                  //查找成功成功，进行跳转或其他操作
+                  this.history = stock;
+                  this.drawChart();
+              }
+              else {
+                  // 显示错误消息
+                  this.errorMessage = '该股票不存在';
+                }
+          }
+          catch (error) {
+                  console.error('请求失败:', error);
+                  // 显示通用错误消息
+                  this.errorMessage = '失败，请稍后重试';
+              }
+        },
+        drawChart() {
+            console.log('开始绘图')
+            const ctx = document.getElementById('stockChart').getContext('2d');
+            const labels = this.history.map(item => item.time);
+            const data = this.history.map(item => item.close_price);
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '价格',
+                        data: data,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'day'
+                            },
+                            title: {
+                                display: true,
+                                text: '时间'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '价格'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+
     }
 }
 </script>
@@ -226,6 +351,16 @@ export default {
 
 .negative {
     color: green; /* 涨幅为负时字体颜色为绿色 */
+}
+.chart-container {
+    position: absolute;
+    top: 60%;
+    left: 10%;
+    width: 80%;
+    height: 30%;
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 20px;
 }
 </style>
   

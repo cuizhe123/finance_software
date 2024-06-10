@@ -7,7 +7,7 @@
           <thead>
             <tr>
               <th>时间</th>
-              <th>序号</th>
+              <th>名称</th>
               <th>代号</th>
               <th>买卖</th>
               <th>交易价格</th>
@@ -18,7 +18,7 @@
           <tbody>
             <tr v-for="(item, index) in history" :key="index">
               <td>{{ item.time }}</td>
-              <td>{{ item.number}}</td>
+              <td>{{ item.name}}</td>
               <td>{{ item.code}}</td>
               <td>{{ item.buysell}}</td>
               <td>{{ item.price }}</td>
@@ -43,7 +43,7 @@
     data() {
       return {
         history: [
-          { 'time':0 , 'number':0 , 'code': '001','buysell':'买', 'price': 10.5, 'quantity': 100,'gain':0 },
+          { 'time':0 , 'name':0 , 'code': '001','buysell':'买', 'price': 10.5, 'quantity': 100,'gain':0 },
         ]
       };
     },
@@ -53,6 +53,7 @@
     },
     methods: {
       async GetHistory() {
+        console.log('我的交易历史');
                 // 这里可以提交表单数据到后端保存用户注册信息
                 try {
                     //将这四个参数传到后端

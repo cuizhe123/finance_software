@@ -101,7 +101,7 @@ export default {
               }
         },
         async getmystockvalue(user_name) {
-                // 这里可以提交表单数据到后端保存用户注册信息
+            // 这里可以提交表单数据到后端保存用户注册信息
                 try {
                     //将这四个参数传到后端
                     const response = await axios.post('http://127.0.0.1:5000/user/mystock', {
@@ -115,11 +115,12 @@ export default {
                             let stock = my_stock[i];
                             try {
                                 //将这四个参数传到后端
-                                const response2 = await axios.post('http://127.0.0.1:5000/user/mystock', {
+                                const response2 = await axios.post('http://127.0.0.1:5000/stock/stock_mess', {
                                     'code': stock.code
                                 });
-                                const stock_now = response.data.result;
+                                const stock_now = response2.data.result;
                                 this.stock_value += stock.quantity * stock_now.price;
+                                console.log(this.stock_value)
                             }
                             catch (error) {
                                 console.error('查看股票信息失败:', error);

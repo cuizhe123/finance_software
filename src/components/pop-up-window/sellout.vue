@@ -9,7 +9,7 @@
       <div class="input-container">
         <input type="number" v-model="sell_quantity" placeholder="请输入数量" min="1" step="1">
       </div>
-      <button class="confirm-button" @click="confirm">确认</button>
+      <button class="confirm-button" @click="sellout">确认</button>
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
     </div>
@@ -27,45 +27,116 @@
         type: String,
         required: true
       },
-      //currentPrice: {
-       // type: Number,
-        //required: true
-      //},
-      //cash: {
-        //type: Number,
-        //required: true
-      //}
+      username: {
+        type: String,
+        required: true
+      },
+      currentPrice: {
+       type: Number,
+        required: true
+      }
     },
     data() {
       return {
-        total_quantity: 10, //总数量
+        total_quantity: 100, //总数量
         sell_quantity: 1, // 数量
         errorMessage: '', // 错误消息
         successMessage: '', // 成功消息
         cash:10,
-        currentPrice:10
       };
+    },
+    mounted() {
+      this.GetMessage();
+      this.getstock();
     },
     methods: {
       close() {
         this.$emit('close');
       },
-      confirm() {
-        const totalPrice = this.sell_quantity * this.currentPrice;
-        const a = this.sell_quantity - this.total_quantity;
-        if ( a > 0 ) {
-          this.errorMessage = '卖出数量超过您的持仓数量，请重新输入';
-          this.successMessage = '';
-        } else {
-          // 购买成功，触发成功交易事件
-          this.successMessage = `成功卖出 ${this.sell_quantity} 股 ${this.stockname}`;
-          this.errorMessage = '';
-          // 更新已有金额和持仓信息
-          this.cash += totalPrice;
-          this.total_quantity -=this.sell_quantity;
-          // 在这里可以触发更新持仓信息的事件或者执行其他操作
-        }
-      }
+      async sellout() {
+        console.log('售卖')
+          try {
+                  const response = await axios.post('http://127.0.0.1:5000/trade/sellout', {
+                    'username': this.username,
+                    'stock_code': this.code,
+                    'stock_name': this.stockname,
+                    'sell_quantity': this.sell_quantity,
+                    'price': this.currentPrice
+                  });
+              const data = response.data;
+            const result = data.result;
+            console.log(this.username, this.code, this.stockname,this.buy_quantity, this.currentPrice)
+            console.log('售卖结果', result);
+            if (result) {
+              //购买成功，进行跳转或其他操作
+              this.GetMessage()
+              this.getstock()
+              this.errorMessage = ''
+            }
+            else {
+              this.errorMessage = '持仓不足,售卖失败';
+            }   
+          }
+          catch (error) {
+                  console.error('请求失败:', error);
+                  // 显示通用错误消息
+                  this.errorMessage = '失败，请稍后重试';
+              }
+      },
+      async GetMessage() {
+          try {
+                  // 发送异步请求到后端验证用户名和密码
+                  const response = await axios.post('http://127.0.0.1:5000/user/by_name', {
+                      'username': this.username
+                  });
+              const data = response.data;
+              const user = data.user;
+              if (user != null) {
+                  this.cash = user.money
+                  } else {
+                      // 显示错误消息
+                      this.errorMessage = '用户名或密码错误';
+                  }
+              } catch (error) {
+                  console.error('失败:', error);
+                  // 显示通用错误消息
+                  this.errorMessage = '失败，请稍后重试';
+              }
+      },
+      async getstock() {
+                // 这里可以提交表单数据到后端保存用户注册信息
+                try {
+                    //将这四个参数传到后端
+                    const response = await axios.post('http://127.0.0.1:5000/user/my_single_stock', {
+                      'username': this.username,
+                        'code':this.code
+                    });
+                  const data = response.data; //data的数据结构，[{'name': ,'code': ,'price': ,'quantity': },{...},{...}]
+                  const num = data.result;
+                  console.log('我的持仓', num);
+                  this.total_quantity = num;
+                }
+                catch (error) {
+                  console.error('查看持仓失败:', error);
+                    this.errorMessage = '查看持仓失败，请稍后再试';
+                }
+        },
+      // confirm() {
+      //   const totalPrice = this.sell_quantity * this.currentPrice;
+      //   const a = this.sell_quantity - this.total_quantity;
+      //   if ( a > 0 ) {
+      //     this.errorMessage = '卖出数量超过您的持仓数量，请重新输入';
+      //     this.successMessage = '';
+      //   } else {
+      //     // 购买成功，触发成功交易事件
+      //     this.successMessage = `成功卖出 ${this.sell_quantity} 股 ${this.stockname}`;
+      //     this.errorMessage = '';
+      //     // 更新已有金额和持仓信息
+      //     this.cash += totalPrice;
+      //     this.total_quantity -=this.sell_quantity;
+      //     // 在这里可以触发更新持仓信息的事件或者执行其他操作
+      //   }
+      // }
     }
   };
   </script>

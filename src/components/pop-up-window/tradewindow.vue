@@ -9,9 +9,9 @@
         </form> 
         <div class="trade-button-container">
             <button class="trade-button1" @click="openbuyin">买入</button>
-            <buyin v-if="buyin" :stockname="stockname" :code="code" :currentPrice="currentPrice" @close="closebuyin" />
+            <buyin v-if="buyin" :stockname="stockname" :code="code":username = "username" :currentPrice="currentPrice" @close="closebuyin" />
             <button class="trade-button2" @click="opensellout">卖出</button>
-            <sellout v-if="sellout" :stockname="stockname" :code="code" :currentPrice="currentPrice" @close="closesellout" />
+            <sellout v-if="sellout" :stockname="stockname" :code="code" :username = "username":currentPrice="currentPrice" @close="closesellout" />
         </div>
     </div>  
 </template>
@@ -30,16 +30,23 @@ import sellout from './sellout.vue';
         code: {
             type: String,
             required: true
+        },
+        username:{
+            type: String,
+            required: true
         }
     },
     data() {
       return {
-        username: 'John Doe', // 用户名
         stockname: '上证指数',  //股票名
         currentPrice: 10,  //价格
         buyin: false,
-        sellout: false
+          sellout: false,
+          market:['sh000001','sz399001','bj899050','sh000300']
       };
+    },
+    mounted() {
+        this.Getstock();
     },
    
     methods: {
@@ -48,6 +55,7 @@ import sellout from './sellout.vue';
         },
         openbuyin() {
             this.buyin = true;
+            
         },
         closebuyin() {
             this.buyin = false;
@@ -57,6 +65,35 @@ import sellout from './sellout.vue';
         },
         closesellout() {
             this.sellout = false;
+        },
+        async Getstock() {
+          try {
+                  const response = await axios.post('http://127.0.0.1:5000/stock/stock_mess', {
+                      'code': this.code
+                  });
+                  
+              const data = response.data;
+              const stock = data.result;
+              console.log(stock)
+              if (stock != null) {
+                if (this.market.includes(this.code)) {
+                    this.stockname = stock.market_name; //股票名
+                    this.currentPrice = stock.price;
+                  }
+                  else {
+                    this.stockname = stock.stock_name; //股票名
+                    this.currentPrice = stock.price
+                  }
+              }
+              else {
+                  // 显示错误消息
+
+                }
+          }
+          catch (error) {
+                  console.error('请求失败:', error);
+                  // 显示通用错误消息
+              }
         },
     },
   }

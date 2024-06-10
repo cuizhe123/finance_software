@@ -19,42 +19,42 @@
         </div>
     </div> 
     <div class="middle-buttons-container">
-        <button class="index-button" @click="goToMarketDetail('000001',username)">
+        <button class="index-button" @click="goToMarketDetail('sh000001',username)">
             <div class="button-label">上证指数</div>
             <div class="button-info">
-                <div class="code">代码:000001</div>
+                <div class="code">代码:sh000001</div>
                 <div class="price">价格:XXXX</div>
                 <div class="percentage">涨跌：+1.2%</div>
             </div>
         </button>
-        <button class="index-button" @click="goToMarketDetail('399001',username)">
-            <div class="button-label">深证指数</div>
+        <button class="index-button" @click="goToMarketDetail('sz399001',username)">
+            <div class="button-label">深证成指</div>
             <div class="button-info">
-                <div class="code">代码:399001</div>
+                <div class="code">代码:sz399001</div>
                 <div class="price">价格:XXXX</div>
                 <div class="percentage">涨跌：-0.8%</div>
             </div>
         </button>
-        <button class="index-button" @click="goToMarketDetail('399005',username)">
-            <div class="button-label">北交指数</div>
+        <button class="index-button" @click="goToMarketDetail('bj899050',username)">
+            <div class="button-label">北证50</div>
             <div class="button-info">
-                <div class="code">代码:399005</div>
+                <div class="code">代码:bj899050</div>
                 <div class="price">价格:XXXX</div>
                 <div class="percentage">涨跌：+0.5%</div>
             </div>
         </button>
-        <button class="index-button" @click="goToMarketDetail('000300',username)">
+        <button class="index-button" @click="goToMarketDetail('sh000300',username)">
             <div class="button-label">沪深300</div>
             <div class="button-info">
-                <div class="code">代码:000300</div>
+                <div class="code">代码:sh000300</div>
                 <div class="price">价格:XXXX</div>
                 <div class="percentage">涨跌：-0.3%</div>
             </div>
         </button>
     </div>
     <div class="search-container">
-        <form @submit.prevent="handleSubmit" class="form2">
-            <input type="number" class="search-container-input" v-model.number="searchQuery" @input="hideNotFoundMsg" @focus="isInputFocused = true" @blur="isInputFocused = false" placeholder="请输入证券代码" required>
+        <form @submit.prevent="Getstock" class="form2">
+            <input type="text" class="search-container-input" v-model="searchQuery" @input="hideNotFoundMsg" @focus="isInputFocused = true" @blur="isInputFocused = false" placeholder="请输入证券代码" required>
             <button type="submit" class="search-container-button">搜索</button>
         </form>
     </div>
@@ -77,36 +77,48 @@ export default {
         return {
             
             price001: 0, // 上证指数价格
-            price399: 0, // 深证指数价格
-            price3995: 0, // 北交指数价格
+            price399: 0, // 深证成指价格
+            price899: 0, // 北证50价格
             price300: 0, // 沪深300价格
             code: 0,
             searchQuery: '', // 搜索框中的内容
-            securities: ['000001', '399001', '399005', '000300'], // 证券代号列表
             showNotFoundMsg: false, // 是否显示未找到代码的消息
             isInputFocused: false // 输入框是否聚焦的标志
         };
     },
     
     methods: {
-        handleSubmit() {
-            // 检查搜索的证券代码是否存在
-            if (this.searchQuery !== '' && this.securities.includes(this.searchQuery.toString())) {
-                const code = this.searchQuery.toString();
-                
-                // 调用父组件方法跳转到市场详情页面
-                this.goToMarketDetail(code,this.username);
-               
-                // 重置搜索框和未找到消息
-                this.searchQuery = '';
+        async Getstock() {
+          try {
+                  // 发送异步请求到后端验证用户名和密码
+                  const response = await axios.post('http://127.0.0.1:5000/stock/stock_mess', {
+                      'code': this.searchQuery.toString()
+                  });
+              const data = response.data;
+              const stock = data.result;
+            //   console.log('data', data);
+            //   console.log('user', data.user);
+                // console.log(data.user.name)
+              if (stock != null) {
+                  //查找成功成功，进行跳转或其他操作
+                  this.goToMarketDetail(this.searchQuery.toString(), this.username);
+                  this.searchQuery = '';
                 this.showNotFoundMsg = false;
-            } else {
-                // 显示未找到消息
-                if (!this.isInputFocused) {
-                    this.showNotFoundMsg = true;
+                      //user的结构：{'id':0, 'name':0, 'password':0, 'question':0, 'answer':0, 'money':0}
+              }
+              else {
+                  // 显示错误消息
+                  this.errorMessage = 'code错误';
+                  this.showNotFoundMsg = true;
                 }
-            }
+          }
+          catch (error) {
+                  console.error('请求失败:', error);
+                  // 显示通用错误消息
+                  this.errorMessage = '失败，请稍后重试';
+              }
         },
+       
         hideNotFoundMsg() {
             // 用户输入时隐藏未找到消息
             this.showNotFoundMsg = false;
