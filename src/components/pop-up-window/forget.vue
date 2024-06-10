@@ -39,12 +39,31 @@ import axios from 'axios';
         },
         closeanswerquestion() {
             this.answerquestionOpen = false;
+            this.$emit('close');
         },
-        findusername(){
-            //找有没有对应的用户名，有对应的返回answerquestionOpen是true,isUsernameValid为true,没有则都为false
-            //之所以设置两个变量，因为平时isUsernameValid为true才没有错误标签，平时answerquestionOpen为false
-            //true则跳转
-            this.openanswerquestion();
+        async findusername(){
+          try {
+              const response = await axios.post('http://127.0.0.1:5000/user/by_name', {
+                  'username': this.username
+              });
+              const data = response.data;
+              const user = data.user;
+            
+              if (data.user != null) {
+                  this.openanswerquestion();
+              }
+              else
+              {
+                      // 显示错误消息
+                      this.isUsernameValid = false;
+              }
+          }
+          catch (error) {
+                  console.error('请求失败:', error);
+                  // 显示通用错误消息
+                  this.isUsernameValid = false;
+              }
+        
         }
     },
   }

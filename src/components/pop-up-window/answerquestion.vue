@@ -39,6 +39,9 @@ import Information from './information.vue';
         isanswer_right: true
       };
     },
+    mounted() {
+        this.getmessage()
+    },
    
     methods: {
         close() {
@@ -49,11 +52,39 @@ import Information from './information.vue';
         },
         closeinformation() {
             this.informationOpen = false;
+            this.$emit('close');
+        },
+        async getmessage(){
+          try {
+              const response = await axios.post('http://127.0.0.1:5000/user/by_name', {
+                  'username': this.username
+              });
+              const data = response.data;
+              const user = data.user;
+            
+              if (data.user != null) {
+                  this.question = user.question;
+                  this.answer = user.answer;
+                  if (this.answer == this.myanswer) {
+                    this.isanswer_right = true
+                  }
+              }
+              else
+              {
+                      // 显示错误消息
+                    this.isUsernameValid = false;
+              }
+          }
+          catch (error) {
+                  console.error('请求失败:', error);
+                  // 显示通用错误消息
+                  this.isUsernameValid = false;
+              }
+        
         },
         is_the_answer_true(){
             //和forget一样，有两个量，分别管报错标签和新窗口
             this.openinformation();
-
         }
     },
   }

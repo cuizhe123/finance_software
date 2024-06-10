@@ -76,18 +76,6 @@ export default {
     }
   },
   methods: {
-    // handleSubmit() {
-    //   if (this.isFormValid) {
-    //     // 这里可以提交表单数据到后端保存用户注册信息
-    //     console.log('用户名:', this.username);
-    //     console.log('密码:', this.password);
-    //     // 清空表单数据
-    //     this.username = '';
-    //     this.password = '';
-    //     this.confirmPassword = '';
-    //     // 清空错误消息
-    //   } 
-    // },
 
     async handleSubmit(user_name,pass_word,ques_tion,ans_wer) {
       if (this.isFormValid) {

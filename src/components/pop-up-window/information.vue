@@ -73,6 +73,7 @@ import axios from 'axios';
                         alert('修改成功');
                         console.log("修改成功",old_password)
                         // 修改成功
+                        this.$emit('close');
                     } else {
                         this.errorMessage = data.message;
                     }

@@ -61,7 +61,7 @@ export default {
   },
   data() {
     return {
-      currentComponent: 'homepage', // 初始显示组件
+      currentComponent: 'login', // 初始显示组件
       selectedCode: '', // 用于存储选中的代码
       selectedindex: '',
       myusername:'',//用户名，非常重要，每个页面都通过用户名来找到其他数据

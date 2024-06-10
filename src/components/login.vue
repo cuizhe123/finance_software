@@ -64,8 +64,7 @@ export default {
                   // 后端返回验证结果
             //成功的话，返回[user的信息,'successful']，失败的话返回[None,错误信息]
             const data = response.data;
-            console.log(222);
-            // console.log(data.user.name)
+
                   if (data.user != null) {
                     //登录成功，进行跳转或其他操作
                     console.log("进入首页")
@@ -77,8 +76,7 @@ export default {
                   }
               } catch (error) {
                   console.error('登录请求失败:', error);
-                  // 显示通用错误消息
-                  this.errorMessage = '登录失败，请稍后重试';
+                 
               }
         },
         switchToRegister() {
