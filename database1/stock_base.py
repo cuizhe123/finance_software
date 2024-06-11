@@ -1,8 +1,10 @@
 import mysql.connector
 import connect
+import datetime
 
 #* DONE index = 1 根据stock_code进行数据查询股票实时数据
 def stock_search_by_code(stock_code:str = 'sh600089', say:int = 0) -> tuple[dict, str]:
+    
     "根据stock_code进行数据查询，stock_code = sh600089 或者600089均可，查询该股票实时数据，如果存在返回该股票的数据tuple[dict, str]里，若不存在则返回tuple[none, str]，dict = {'id', 'stock_code', 'stock_name', 'exchange', 'price', 'up_down', 'price_range', 'trade_num', 'trade_money', 'amplitude', 'high_price', 'low_price', 'today_open', 'yester_price', 'quantity_ratio', 'turnover_ratio', 'pe_ratio', 'pb_ratio', 'total_value', 'circle_value', 'increase_ratio', 'five_up_down', 'zdf60', 'dfnc'}"
     if len(stock_code) > 6:
         stock_code = stock_code[2:]
@@ -271,8 +273,9 @@ def user_choose_modify(name:str = '', stock_code:str = '', stock_name:str = '', 
 
 
 #* DONE index = 8 实现用户的交易记录的存储
-def user_stock_record(name:str = '', stock_code:str = '', stock_name:str = '', num:int = 0, price:float = 0.0, decrease:bool = 0, say:int = 0) ->tuple[bool, str]:
+def user_stock_record(name:str = '', stock_code:str = '', stock_name:str = '', num:int = 0, price:float = 0.0, time:str = '' ,decrease:bool = 0, say:int = 0) ->tuple[bool, str]:
     '实现用户的交易记录的存储，注意num必须要非负数，decrease默认是0，表示买入，decrease如果是1则是卖出'
+    time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     if len(stock_code) > 6:
         stock_code = stock_code[2:]
     database_name = 'user_trade'
@@ -310,13 +313,13 @@ def user_stock_record(name:str = '', stock_code:str = '', stock_name:str = '', n
     
     ## 既存在用户又存在股票
     
-    sql3 = 'INSERT INTO trade_record (name, stock_code, stock_name, num, price) VALUES (%s, %s, %s, %s, %s)'
+    sql3 = 'INSERT INTO trade_record (name, stock_code, stock_name, num, price, time) VALUES (%s, %s, %s, %s, %s, %s)'
     # 卖出
     if decrease:
-        mycursor.execute(sql3, (name, stock_code, stock_name, -1 * num, price))
+        mycursor.execute(sql3, (name, stock_code, stock_name, -1 * num, price, time))
     # 买入
     else:
-        mycursor.execute(sql3, (name, stock_code, stock_name,num, price))
+        mycursor.execute(sql3, (name, stock_code, stock_name,num, price, time))
     user_db.commit()
     mycursor.close()
     user_db.close()
@@ -337,7 +340,7 @@ def user_choose_fetch(name:str = '',say:int = 0) -> tuple[list[dict], str]:
     mycursor = user_db.cursor()
 
     # 查看是否存在该用户的持仓信息
-    sql1 = 'SELECT * FROM users_stock WHERE name = %s'
+    sql1 = 'SELECT * FROM self_choose WHERE name = %s'
     mycursor.execute(sql1, (name, ))
     stock = mycursor.fetchall()
     if stock == []:
@@ -353,7 +356,7 @@ def user_choose_fetch(name:str = '',say:int = 0) -> tuple[list[dict], str]:
 
 #* DONE index = 9 查看用户的交易记录信息
 def user_record_fetch(name:str = '',say:int = 0) -> tuple[list[dict], str]:
-    "查看用户的自选个股信息,dict = {'id', 'name', 'stock_code', 'stock_name', 'num', 'price'}, num 是正数代表是买入，负数代表卖出"
+    "查看用户的自选个股信息,dict = {'id', 'name', 'stock_code', 'stock_name', 'num', 'price', 'time'}, num 是正数代表是买入，负数代表卖出"
     database_name = 'user_trade'
     user_db = connect.connect_db(database_name)
 
@@ -374,6 +377,6 @@ def user_record_fetch(name:str = '',say:int = 0) -> tuple[list[dict], str]:
         return None, f"Error: the user don\'t have any stock"
     stock_list = []
     for one in stock:
-        dict = {'id': one[0], 'name': one[1], 'stock_code': one[2], 'stock_name': one[3], 'num': one[4], 'price':one[5]}
+        dict = {'id': one[0], 'name': one[1], 'stock_code': one[2], 'stock_name': one[3], 'num': one[4], 'price':one[5], 'time':one[6]}
         stock_list.append(dict)
     return stock_list,f'Successfully'

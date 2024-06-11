@@ -16,7 +16,7 @@ import connect
 
 #* DONE index=1 增：用户注册，增添用户信息在用户基础信息表中(user_trade.users)
 
-def user_register(name:str = '', password:str = '111111', question:str = 'are you ok?', answer:str = 'ok', say:int = 0) -> tuple[bool, str]:
+def user_register(name:str = '李华', password:str = '111111', question:str = 'are you ok?', answer:str = 'ok', say:int = 0) -> tuple[bool, str]:
     '增添用户信息在用户基础信息表中，name 应为唯一的标识，录入成功返回True，若不允许将该组信息录入，返回值将是False'
     if say:
         print(f"\nCall function: user_register(name = {name}, password = {password}, question = {question}, answer = {answer})")
@@ -71,7 +71,7 @@ def user_register(name:str = '', password:str = '111111', question:str = 'are yo
 
 #* DONE index = 2 查：用户正常登录，要根据用户名进行数据查询，查询用户的用户名是否存在，如果存在返回包括密码在内的数据(user_trade.users)
 
-def user_search(name:str = '', password:str = '', say:int = 0) -> tuple[dict, str]:
+def user_search(name:str = '李华', password:str = '111111', say:int = 0) -> tuple[dict, str]:
     "根据用户名进行数据查询，查询用户的用户名是否存在，如果存在返回包括密码在内的数据在tuple[dict, str]里，若不存在则返回tuple[none, str]，dict = {'id', 'name', 'password', 'question', 'answer', 'money'}"
     if say:
         print(f"\nCall function: search_user(name = {name}, password = {password})")
@@ -108,7 +108,7 @@ def user_search(name:str = '', password:str = '', say:int = 0) -> tuple[dict, st
 
 #* DONE index = 3 改：用户登录之后，可以进行密码修改、密保问题和答案修改(user_trade.users)
 
-def user_modify(name:str = '', old_password:str = '111111' ,new_password:str = '222222', question:str = 'are you ok?', answer:str = 'ok', say:int = 0) -> tuple[bool, str]:
+def user_modify(name:str = '李华', old_password:str = '111111' ,new_password:str = '222222', question:str = 'are you ok?', answer:str = 'ok', say:int = 0) -> tuple[bool, str]:
     '用户登录之后，可以进行密码修改、密保问题和答案修改，修改成功会返回True，修改不成功则返回False'
     if say:
         print(f"\nCall function: user_modify(name = {name}, old_password = {old_password},\
@@ -155,7 +155,7 @@ new_password = {new_password}, question = {question}, answer = {answer})")
 
 #* DONE index = 4 删：用户登录之后，可以选择注销用户，根据 key = name删除(user_trade.users以及其他关联表)
 
-def user_delete(name:str = '', password:str = '111111', say:int = 0) -> tuple[bool, str]:
+def user_delete(name:str = '李华', password:str = '111111', say:int = 0) -> tuple[bool, str]:
     '用户登录之后，可以选择注销用户，根据 key = name删除(user_trade.users以及其他关联表), 删除成功则返回True, 失败则返回Fasle'
     if say:
         print(f"\nCall function: user_modify(name = {name}, password = {password})")
@@ -196,7 +196,7 @@ def user_delete(name:str = '', password:str = '111111', say:int = 0) -> tuple[bo
 
 #* DONE index = 5 查： 用户要找回密码，此时只根据用户的name则返回所有的用户基本数据
 
-def user_search_by_name(name:str = '', say:int = 0) -> tuple[dict, str]:
+def user_search_by_name(name:str = '李华', say:int = 0) -> tuple[dict, str]:
     "用户要找回密码，根据用户名进行数据查询，查询用户的用户名是否存在，如果存在返回包括密码在内的数据在tuple[dict, str]里，若不存在则返回tuple[none, str]，dict = {'id', 'name', 'password', 'question', 'answer', 'money'}"
     if say:
         print(f"\nCall function: search_user_by_name(name = {name})")
@@ -233,8 +233,8 @@ def user_search_by_name(name:str = '', say:int = 0) -> tuple[dict, str]:
 
 #* DONE index = 6: 改 实现用户的充值 账户的钱数 += money
 
-def user_money_modify(name:str = '', password:str = '111111', money:float = 0, decrease:int = 0,say:int = 0) -> tuple[bool, str]:
-    '用户登录之后，可以实现用户的充值，账户的钱数 += money，修改成功会返回True，修改不成功则返回False'
+def user_money_modify(name:str = '李华', password:str = '111111', money:float = 0, decrease:int = 0,say:int = 0) -> tuple[bool, str]:
+    '用户登录之后，可以实现用户的充值，账户的钱数 += money，decrease是资产减少状态位，默认为0，即资产增加，修改成功会返回True，修改不成功则返回False'
     database_name = 'user_trade'
     user_db = connect.connect_db(database_name)
 

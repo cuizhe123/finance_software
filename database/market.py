@@ -5,7 +5,9 @@ import json
 import mysql.connector
 import connect
 
-def market_now(say:int = 0):
+#* index = 1 获得大盘数据的实时数据
+def market_now(say:int = 0) -> tuple[bool,str]:
+    '获得大盘数据的实时数据'
     dict_all = {'上证指数':[], '深证成指':[], '北证50':[], '沪深300':[]} 
     try:
         df = ak.stock_individual_spot_xq(symbol='SH000001',timeout=1)
@@ -50,7 +52,11 @@ CREATE TABLE market(
     low52 FLOAT -- 52周最低
 );
 '''
+
+
+#* index = 2 将大盘数据的实时数据处理后存入数据库
 def market_now_save() -> tuple[bool, str]:
+    '将大盘数据的实时数据处理后存入数据库'
     database_name = 'market'
     user_db = connect.connect_db(database_name)
 

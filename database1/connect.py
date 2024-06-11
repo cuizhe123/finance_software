@@ -1,6 +1,6 @@
 import mysql.connector
 
-def connect_db(database:str = "" , host:str = "127.0.0.1",  port:str = "3306", user:str = "root",  password:str = "Qh20040805"):
+def connect_db(database:str = "" , host:str = "127.0.0.1",  port:str = "3306", user:str = "root",  password:str = "wsx198036"):
     try:
         user_db = mysql.connector.connect(
             host=host,  # 数据库主机地址
