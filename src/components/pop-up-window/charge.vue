@@ -134,7 +134,7 @@ export default {
 }
 
 .cash-info {
-    background-color: #7edf7b; 
+    background-color: #a4a5a4; 
     border-radius: 5px; 
     padding: 20px; 
     margin-bottom: 50px;
@@ -144,7 +144,7 @@ export default {
 }
 
 .input-wrapper {
-    background-color: #7edf7b; 
+    background-color: #a4a5a4; 
     border-radius: 5px;
     padding: 20px; 
     margin-bottom: 30px;
@@ -154,7 +154,7 @@ export default {
 
 .confirm-button {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #6f7070;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -164,6 +164,6 @@ export default {
 }
 
 .confirm-button:hover {
-  background-color: #0056b3;
+  background-color: #292a2a;
 }
 </style>

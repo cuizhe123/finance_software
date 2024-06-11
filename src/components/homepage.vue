@@ -3,14 +3,9 @@
     <div class="logo-container1">
         <img src="../../logo.jpg" alt="logo">
     </div>
-    <div class="logo-container2">
-        <img src="../../xdd.jpg" alt="logo">
-    </div>
-    <div class="logo-container3">
-        <img src="../../bbx.jpg" alt="logo">
-    </div>
+    
     <div class="top-label">
-        <div class="top-value">欢 迎 来 到 金 霸 霸 量 化 交 易 平 台 ！您 的 最 佳 选 择 !</div>
+        <div class="top-value">TradePulse —— 一站式A股量化交易平台</div>
         <div class="top-value1">祝您今日愉快！</div>
         <div class="top-value2">用户: {{ this.username }}</div>
     </div>
@@ -243,7 +238,7 @@ export default {
     left: 0;
     height: 100px; /* 设置标签的高度 */
     width: 100%; /* 宽度与父容器相同 */
-    background-color: #42b0eb; /* 设置标签的背景色 */
+    background-color: #000a0f; /* 设置标签的背景色 */
 }
 
 .top-value {
@@ -253,6 +248,7 @@ export default {
     transform: translateX(-50%); /* 平移自身宽度的一半 */
     font-size: 28px; /* 放大字体 */
     font-weight: bold; /* 加粗字体 */
+    color: #ffffff; /* 白色字体 */
 }
 
 .top-value1 {
@@ -262,6 +258,7 @@ export default {
     transform: translateX(-50%); /* 平移自身宽度的一半 */
     font-size: 18px; /* 放大字体 */
     font-weight: bold; /* 加粗字体 */
+    color: #ffffff; /* 白色字体 */
 }
 
 .top-value2 {
@@ -271,6 +268,7 @@ export default {
     transform: translateX(-50%); /* 平移自身宽度的一半 */
     font-size: 18px; /* 放大字体 */
     font-weight: bold; /* 加粗字体 */
+    color: #ffffff; /* 白色字体 */
 }
 
 .top-buttons-container {
@@ -285,13 +283,13 @@ export default {
     position: absolute; 
     width: 100%;
     display: flex;
-    background-color: #007bff; /* 蓝色背景 */
+    background-color: #999a9b; /* 灰色背景 */
 }
 
 .top-button {
     flex: 1;
     border: 1px solid #000; /* 黑色细边框 */
-    background-color: #007bff; /* 蓝色背景 */
+    background-color: #979798; /* 蓝色背景 */
     color: #ffffff; /* 白色字体 */
     cursor: pointer;
     padding: 10px 10px;
@@ -306,7 +304,7 @@ export default {
 .top-button1 {
     flex: 1;
     border: 1px solid #000; /* 黑色细边框 */
-    background-color: #224a78; /* 蓝色背景 */
+    background-color: #404142; 
     color: #ffffff; /* 白色字体 */
     cursor: pointer;
     padding: 10px 10px;
@@ -319,14 +317,16 @@ export default {
 }
 
 .top-button:hover {
-    background-color: #0056b3; /* 按钮悬停时的背景色 */
+    background-color: #333434; /* 按钮悬停时的背景色 */
 }
-
+.top-button1:hover {
+    background-color: #404142; 
+}
 .user-info {
     position: relative;
     top: 80px;
     left: 50%;
-    background-color: #4cc3e0;
+    background-color: #858586;
     padding: 20px 20px;
     margin: 50px auto;
     border-radius: 5px;
@@ -355,7 +355,7 @@ export default {
 .info-button {
     margin-left: 70px;
     padding: 5px 10px;
-    background-color: #0c97c2; 
+    background-color: #a8aaaa; 
     color: #fff;
     border: none;
     width: 120px;
@@ -363,7 +363,7 @@ export default {
     cursor: pointer;
 }
 .info-button:hover {
-    background-color: #0056b3; /* 按钮悬停时的背景色 */
+    background-color: #383839; /* 按钮悬停时的背景色 */
 }
 </style>
   

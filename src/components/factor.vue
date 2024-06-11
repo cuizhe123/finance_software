@@ -4,7 +4,7 @@
         <img src="../../logo.jpg" alt="logo">
     </div>
     <div class="top-label">
-        <div class="top-value">欢 迎 来 到 金 霸 霸 量 化 交 易 平 台 ！您 的 最 佳 选 择 !</div>
+        <div class="top-value">TradePulse —— 一站式A股量化交易平台</div>
         <div class="top-value1">祝您今日愉快！</div>
         <div class="top-value2">用户: {{ username }}</div>
     </div>

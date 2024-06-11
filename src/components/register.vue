@@ -1,7 +1,7 @@
 <template>
    <!-- 欢迎条幅 -->
   <div class="welcome-banner">
-    <div class="top-value">欢 迎 来 到 金 霸 霸 量 化 交 易 平 台 !</div>
+    <div class="top-value">TradePulse —— 一站式A股量化交易平台</div>
   </div>
   <div class="container">
     <!-- Logo 和 注册表单 -->
@@ -153,7 +153,7 @@ export default {
 /* 欢迎条幅样式 */
 .welcome-banner {
   position: absolute;
-  background-color: #4CAF50; /* 绿色背景 */
+  background-color: #0f0f0f; /* 绿色背景 */
   position: absolute;
   top: 0;
   left: 0;
@@ -214,7 +214,7 @@ export default {
 
 button {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #9a9a9b;
   color: #fff;
   border: none;
   cursor: pointer;

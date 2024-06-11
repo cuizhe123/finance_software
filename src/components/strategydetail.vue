@@ -4,7 +4,7 @@
     <img src="../../logo.jpg" alt="logo">
   </div>
   <div class="top-label">
-    <div class="top-value">欢 迎 来 到 金 霸 霸 量 化 交 易 平 台 ！您 的 最 佳 选 择 !</div>
+    <div class="top-value">TradePulse —— 一站式A股量化交易平台</div>
     <div class="top-value1">祝您今日愉快！</div>
     <div class="top-value2">用户: {{ username }}</div>
   </div>
@@ -199,7 +199,7 @@
   width:5%;
   flex: 1;
   border: 1px solid #000; /* 黑色细边框 */
-  background-color: #0d8ced; /* 蓝色背景 */
+  background-color: #7d7d7e; /* 蓝色背景 */
   color: #ffffff; /* 白色字体 */
   cursor: pointer;
   padding: 0px 20px;
@@ -212,12 +212,12 @@
 }
 
 .strategydetail-button:hover{
-  background-color: #0505a6; /* 蓝色背景 */
+  background-color: #3c3c3c; /* 蓝色背景 */
 }
 
 .section11 {
   position: absolute;
-  background-color: #4cc3e0;
+  background-color: #626363;
   padding: 14px 15px;
   border-radius: 5px;
   width: 500px; /* 设置一个固定的宽度 */
@@ -227,12 +227,14 @@
   transform: translate(-50%, -50%);
   display: flex;
   margin-bottom: 20px; /* 调整各部分之间的间距 */
+  color: #f6f9f9;
 }
 
 .section12 {
   z-index:1 ;
   position: absolute;
-  background-color: #4cc3e0;
+  background-color: #878989;
+  color: #f6f9f9;
   padding: 14px 15px;
   border-radius: 5px;
   width: 500px; /* 设置一个固定的宽度 */
@@ -246,7 +248,8 @@
 
 .section2 {
   position: absolute;
-  background-color: #4cc3e0;
+  background-color: #808181;
+  color: #050505;
   padding: 14px 15px;
   border-radius: 5px;
   width: 400px; /* 设置一个固定的宽度 */
@@ -260,7 +263,8 @@
 
 .section31 {
   position: absolute;
-  background-color: #4cc3e0;
+  background-color: #8e8f90;
+  color: #050505;
   padding: 14px 15px;
   border-radius: 5px;
   width: 150px; /* 设置一个固定的宽度 */
@@ -283,7 +287,8 @@
 
 .section4 {
   position: absolute;
-  background-color: #4cc3e0;
+  background-color: #a6a8a8;
+  color: #050505;
   padding: 14px 15px;
   border-radius: 5px;
   width: 33%; /* 设置一个固定的宽度 */

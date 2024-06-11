@@ -4,7 +4,7 @@
         <img src="../../logo.jpg" alt="logo">
     </div>
     <div class="top-label">
-        <div class="top-value">欢 迎 来 到 金 霸 霸 量 化 交 易 平 台 ！您 的 最 佳 选 择 !</div>
+        <div class="top-value">TradePulse —— 一站式A股量化交易平台</div>
         <div class="top-value1">祝您今日愉快！</div>
         <div class="top-value2">用户: {{ username }}</div>
     </div>
@@ -18,9 +18,7 @@
             <button class="top-button" @click="switchToLogin">退出账号</button>
         </div>
     </div>
-    <div class="trade-info">
-        <div>请搜索您所要买卖的股票</div>
-    </div>
+    <div class="trade-info">请搜索您所要买卖的股票</div>
     <div class="search-container1">
         <form @submit.prevent="Getstock" class="form2">
             <input type="text" class="search-container-input" v-model="searchQuery" @input="hideNotFoundMsg" @focus="isInputFocused = true" @blur="isInputFocused = false" placeholder="请输入证券代号" required>
@@ -185,7 +183,8 @@ export default {
     position: absolute;
     top: 33%;
     left: 21%;
-    background-color: #4cc3e0;
+    background-color: #727374;
+    color: #fdfdfe;
     padding: 20px 20px;
     margin: 50px auto;
     border-radius: 5px;
@@ -206,8 +205,8 @@ export default {
     top:0;
     width:100%;
     height:15%;
-    background-color: #1670d0;
-    color: rgb(10, 9, 9);
+    background-color: #464748;
+    color: rgb(245, 244, 244);
     padding: 15px;
     text-align: center;
 }

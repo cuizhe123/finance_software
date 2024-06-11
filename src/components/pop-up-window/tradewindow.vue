@@ -131,7 +131,8 @@ import sellout from './sellout.vue';
         border-radius: 5px;
         cursor: pointer;
         width: 100px; /* 或者根据需要调整按钮的宽度 */
-        left:30%
+        left:30%;
+        top:70%
     }
     .trade-button1:hover {
         background-color: rgb(8, 121, 8);
@@ -147,7 +148,8 @@ import sellout from './sellout.vue';
         border-radius: 5px;
         cursor: pointer;
         width: 100px; /* 或者根据需要调整按钮的宽度 */
-        left:58%
+        left:58%;
+        top:70%
     }
     .trade-button2:hover {
         background-color: rgb(160, 14, 14);

@@ -206,13 +206,13 @@ export default {
   
   .confirm-button {
     position: absolute;
-    top:60%;
+    top:65%;
     left: 50%;
     transform: translateX(-50%); /* 平移自身宽度的一半 */
     display: block;
     width: 30%;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #828384;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -221,7 +221,7 @@ export default {
   }
   
   .confirm-button:hover {
-    background-color: #0056b3;
+    background-color: #323333;
   }
 
   .error-message{

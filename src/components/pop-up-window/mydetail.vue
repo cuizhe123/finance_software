@@ -115,7 +115,7 @@ export default {
   }
   
   .info-message {
-    background-color: #1670d0;
+    background-color: #2b2b2b;
     color: white;
     padding: 30px;
     text-align: center;

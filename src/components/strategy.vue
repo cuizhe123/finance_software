@@ -4,7 +4,7 @@
         <img src="../../logo.jpg" alt="logo">
     </div>
     <div class="top-label">
-        <div class="top-value">欢 迎 来 到 金 霸 霸 量 化 交 易 平 台 ！您 的 最 佳 选 择 !</div>
+        <div class="top-value">TradePulse —— 一站式A股量化交易平台</div>
         <div class="top-value1">祝您今日愉快！</div>
         <div class="top-value2">用户: {{ username }}</div>
     </div>
@@ -82,7 +82,8 @@ export default {
   }
 .strategy-label {
     position: relative;
-    background-color: #4cc3e0;
+    background-color: #797b7b;
+    color: #040404;
     padding: 14px 15px;
     border-radius: 5px;
     width: 100px; /* 设置一个固定的宽度 */
@@ -95,11 +96,11 @@ export default {
     width: 300px; /* 设置一个固定的宽度 */
     height: 50px;
     top:5px;
-    background-color: #2fb1f2;
+    background-color: #777879;
     
   } 
   .strategy-button:hover{
-    background-color: #2650fb;
+    background-color: #272727;
   }
 </style>
   

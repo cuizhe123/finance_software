@@ -4,7 +4,7 @@
         <img src="../../logo.jpg" alt="logo">
     </div>
     <div class="top-label">
-        <div class="top-value">欢 迎 来 到 金 霸 霸 量 化 交 易 平 台 ！您 的 最 佳 选 择 !</div>
+        <div class="top-value">TradePulse —— 一站式A股量化交易平台</div>
         <div class="top-value1">祝您今日愉快！</div>
         <div class="top-value2">用户: {{ username }}</div>
     </div>
@@ -159,13 +159,14 @@ export default {
 }
 
 .index-button {
+    background-color: #a4a5a5; /* 按钮悬停时的背景色 */
     flex: 1; /* 自动填充剩余空间 */
     min-width: 120px; /* 设置按钮的最小宽度 */
     margin-right: 100px; /* 或者调整右侧外边距 */
 }
 
 .index-button:hover {
-    background-color: #0056b3; /* 按钮悬停时的背景色 */
+    background-color: #565757; /* 按钮悬停时的背景色 */
 }
 
 .button-label {
@@ -218,14 +219,15 @@ export default {
   
 .search-container-button {
     position: absolute;
-    top:120px;
+    top:150px;
     width: 130px; 
     left: 50%;
     transform: translateX(-50%); /* 平移自身宽度的一半 */
+    background-color: rgb(147, 147, 148);
 }
 
 .search-container-button:hover {
-    background-color: rgb(25, 42, 227);
+    background-color: rgb(78, 78, 79);
 }
 .error-message-box2 {
     position: absolute; /* 设置报错信息框为绝对定位 */

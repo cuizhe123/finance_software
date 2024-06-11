@@ -12,7 +12,7 @@
             </div>
             
         </form> 
-        <button class="info-button1" type="submit" :disabled="!isFormValid" @click="change_password(username,old_password,password,question,answer)" >更改密码</button>
+        <button class="info-button111" type="submit" :disabled="!isFormValid" @click="change_password(username,old_password,password,question,answer)" >更改密码</button>
         <div v-if="!isPasswordValid && password && errorPriority === 'password'" class="error-message-box1">
             <span class="error-message1">密码不符规则,必须包含大小写字母和数字,且长度为8位到12位</span>
         </div>
@@ -182,10 +182,10 @@ import axios from 'axios';
         margin-right: 10px;
     }
     
-    .info-button1 {
+    .info-button111 {
         position: absolute;
         padding: 5px 10px;
-        background-color: #0c97c2; 
+        background-color: #6b6b6c; 
         color: #fff;
         border: none;
         width: 120px;
@@ -193,9 +193,10 @@ import axios from 'axios';
         cursor: pointer;
         left: 50%;
         transform: translateX(-50%); /* 平移自身宽度的一半 */
+        top:70%;
     }
-    .info-button1:hover {
-        background-color: #0056b3; /* 按钮悬停时的背景色 */
+    .info-button111:hover {
+        background-color: #252525; /* 按钮悬停时的背景色 */
     }
 
     .error-message-box1 {

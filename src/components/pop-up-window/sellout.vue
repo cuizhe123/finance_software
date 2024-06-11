@@ -213,13 +213,13 @@
       
       .confirm-button {
         position: absolute;
-        top:60%;
+        top:65%;
         left: 50%;
         transform: translateX(-50%); /* 平移自身宽度的一半 */
         display: block;
         width: 30%;
         padding: 10px;
-        background-color: #007bff;
+        background-color: #888989;
         color: #fff;
         border: none;
         border-radius: 4px;
@@ -228,7 +228,7 @@
       }
       
       .confirm-button:hover {
-        background-color: #0056b3;
+        background-color: #3a3a3b;
       }
     
       .error-message{
