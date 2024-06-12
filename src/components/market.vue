@@ -23,32 +23,32 @@
             <div class="button-label">上证指数</div>
             <div class="button-info">
                 <div class="code">代码:sh000001</div>
-                <div class="price">价格:XXXX</div>
-                <div class="percentage">涨跌：+1.2%</div>
+                <div class="price">价格:{{ price001 }}</div>
+                <div class="percentage">涨跌：{{change001}}%</div>
             </div>
         </button>
         <button class="index-button" @click="goToMarketDetail('sz399001',username)">
             <div class="button-label">深证成指</div>
             <div class="button-info">
                 <div class="code">代码:sz399001</div>
-                <div class="price">价格:XXXX</div>
-                <div class="percentage">涨跌：-0.8%</div>
+                <div class="price">价格:{{price399}}</div>
+                <div class="percentage">涨跌:{{change399}}%</div>
             </div>
         </button>
         <button class="index-button" @click="goToMarketDetail('bj899050',username)">
             <div class="button-label">北证50</div>
             <div class="button-info">
                 <div class="code">代码:bj899050</div>
-                <div class="price">价格:XXXX</div>
-                <div class="percentage">涨跌：+0.5%</div>
+                <div class="price">价格:{{price899}}</div>
+                <div class="percentage">涨跌:{{change899}}%</div>
             </div>
         </button>
         <button class="index-button" @click="goToMarketDetail('sh000300',username)">
             <div class="button-label">沪深300</div>
             <div class="button-info">
                 <div class="code">代码:sh000300</div>
-                <div class="price">价格:XXXX</div>
-                <div class="percentage">涨跌：-0.3%</div>
+                <div class="price">价格:{{ price300 }}</div>
+                <div class="percentage">涨跌：{{change300}}%</div>
             </div>
         </button>
     </div>
@@ -80,11 +80,21 @@ export default {
             price399: 0, // 深证成指价格
             price899: 0, // 北证50价格
             price300: 0, // 沪深300价格
+            change001: 0,
+            change399: 0,
+            change899: 0,
+            change300: 0,
             code: 0,
             searchQuery: '', // 搜索框中的内容
             showNotFoundMsg: false, // 是否显示未找到代码的消息
             isInputFocused: false // 输入框是否聚焦的标志
         };
+    },
+    mounted() {
+        this.Getmarketstock('sh000001');
+        this.Getmarketstock('sz399001');
+        this.Getmarketstock('bj899050');
+        this.Getmarketstock('sh000300');
     },
     
     methods: {
@@ -104,6 +114,53 @@ export default {
                   this.goToMarketDetail(this.searchQuery.toString(), this.username);
                   this.searchQuery = '';
                 this.showNotFoundMsg = false;
+                      //user的结构：{'id':0, 'name':0, 'password':0, 'question':0, 'answer':0, 'money':0}
+              }
+              else {
+                  // 显示错误消息
+                  this.errorMessage = 'code错误';
+                  this.showNotFoundMsg = true;
+                }
+          }
+          catch (error) {
+                  console.error('请求失败:', error);
+                  // 显示通用错误消息
+                  this.errorMessage = '失败，请稍后重试';
+              }
+        },
+        async Getmarketstock(code) {
+          try {
+                  // 发送异步请求到后端验证用户名和密码
+                  const response = await axios.post('http://127.0.0.1:5000/stock/stock_mess', {
+                      'code': code
+                  });
+              const data = response.data;
+              const stock = data.result;
+            //   console.log('data', data);
+            //   console.log('user', data.user);
+                // console.log(data.user.name)
+              if (stock != null) {
+                  //查找成功成功，进行跳转或其他操作
+                  if (code == 'sh000001')
+              {
+                  this.price001 = stock.price
+                this.change001 = stock.price_fluctuation
+              }
+              if (code == 'sz399001')
+              {
+                  this.price399 = stock.price
+                this.change399 = stock.price_fluctuation
+              }
+              if (code == 'bj899050')
+              {
+                  this.price899 = stock.price
+                this.change899 = stock.price_fluctuation
+              }
+              if (code == 'sh000300')
+              {
+                  this.price300 = stock.price
+                this.change300 = stock.price_fluctuation
+              }
                       //user的结构：{'id':0, 'name':0, 'password':0, 'question':0, 'answer':0, 'money':0}
               }
               else {
